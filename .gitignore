@@ -1,0 +1,9 @@
+.vs/
+x64/
+Debug/
+Release/
+vcpkg_installed/
+
+*.user
+*.sdf
+*.opensdf

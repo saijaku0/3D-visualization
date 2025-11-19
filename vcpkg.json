@@ -1,0 +1,11 @@
+{
+  "name": "3dgraphics-engine",
+  "version-string": "1.0.0",
+  "dependencies": [
+    "glfw3",
+    "glm",
+    "stb",
+    "assimp",
+    "glad"
+  ]
+}

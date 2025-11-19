@@ -1,0 +1,14 @@
+{
+  "name": "3dgraphics",
+  "version": "1.0.0",
+  "description": "C++ 3D graphics",
+  "main": "index.js",
+  "scripts": {
+    "build": "msbuild 3DGraphics.slnx /p:Configuration=Debug /p:Platform=x64",
+    "start": "cd 3DGraphics && ..\\x64\\Debug\\3DGraphics.exe",
+    "dev": "npm run build && npm run start"
+  },
+  "keywords": ["cpp", "opengl", "graphics"],
+  "author": "",
+  "license": "ISC"
+}
