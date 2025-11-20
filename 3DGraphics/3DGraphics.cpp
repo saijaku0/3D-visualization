@@ -12,8 +12,8 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+int SCR_WIDTH = 800;
+int SCR_HEIGHT = 600;
 
 int main()
 {
@@ -35,6 +35,7 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -89,6 +90,13 @@ int main()
 
         myShader.use();
 
+		glfwGetWindowSize(window, &SCR_WIDTH, &SCR_HEIGHT);
+
+		if (SCR_HEIGHT == 0)
+            SCR_HEIGHT = 1;
+
+		float aspectRatio = (float)SCR_WIDTH / (float)SCR_HEIGHT;
+
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -96,7 +104,7 @@ int main()
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
 
 		glm::mat4 projection = glm::mat4(1.0f);
-		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 
         myShader.setMat4("projection", projection);
         myShader.setMat4("view", view);
