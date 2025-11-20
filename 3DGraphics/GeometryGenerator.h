@@ -1,0 +1,38 @@
+#ifndef GEOMETRY_GENERATOR_H
+#define GEOMETRY_GENERATOR_H
+
+#include "Mesh.h"
+#include <vector>
+
+class GeometryGenerator {
+public: 
+    static Mesh* CreateCube() {
+        std::vector<float> vertices = {
+            -0.5f, -0.5f, -0.5f,  0.5f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,
+             0.5f,  0.5f, -0.5f, -0.5f,  0.5f, -0.5f, -0.5f, -0.5f, -0.5f,
+            -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f,  0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f, -0.5f,  0.5f,  0.5f, -0.5f, -0.5f,  0.5f,
+            -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, -0.5f, -0.5f, -0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f, -0.5f, -0.5f,  0.5f, -0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,  0.5f,  0.5f, -0.5f,  0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,  0.5f, -0.5f,  0.5f,  0.5f,  0.5f,  0.5f,
+            -0.5f, -0.5f, -0.5f,  0.5f, -0.5f, -0.5f,  0.5f, -0.5f,  0.5f,
+             0.5f, -0.5f,  0.5f, -0.5f, -0.5f,  0.5f, -0.5f, -0.5f, -0.5f,
+            -0.5f,  0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f, -0.5f
+        };
+        return new Mesh(vertices);
+    }
+
+    static Mesh* CreatePyramid() {
+        std::vector<float> vertices = {
+            0.0f,  0.5f,  0.0f, -0.5f, -0.5f,  0.5f,  0.5f, -0.5f,  0.5f,
+            0.0f,  0.5f,  0.0f,  0.5f, -0.5f,  0.5f,  0.0f, -0.5f, -0.5f,
+            0.0f,  0.5f,  0.0f,  0.0f, -0.5f, -0.5f, -0.5f, -0.5f,  0.5f,
+           -0.5f, -0.5f,  0.5f,  0.0f, -0.5f, -0.5f,  0.5f, -0.5f,  0.5f
+        };
+        return new Mesh(vertices);
+    }
+};
+
+#endif // GEOMETRY_GENERATOR_H

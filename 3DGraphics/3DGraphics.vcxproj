@@ -141,6 +141,9 @@
     <ClCompile Include="3DGraphics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GeometryGenerator.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
