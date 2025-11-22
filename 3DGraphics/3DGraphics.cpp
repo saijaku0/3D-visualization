@@ -9,6 +9,8 @@
 #include "Shader.h"
 #include "Camera.h"
 
+glm::vec3 lightPos(1.2f, 2.0f, 2.0f);
+
 Camera camera(glm::vec3(1.0f, 0.0f, 0.0f));
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -89,6 +91,16 @@ int main()
     fan.rotationSpeed = 200.0f; // <--- КРУТИТСЯ БЫСТРО (градусов в сек)
     fan.mesh = cubeMesh;
     gameObjects.push_back(fan);
+
+	GameObject pyramid;
+	pyramid.position = glm::vec3(-2.0f, -1.0f, 0.0f);
+	pyramid.scale = glm::vec3(1.0f);
+	pyramid.color = glm::vec3(1.0f, 1.0f, 1.0f);
+	pyramid.rotationAxis = glm::vec3(0.5f, 1.0f, 0.0f);
+	pyramid.angle = 0.0f;
+	pyramid.rotationSpeed = 0.0f;
+	pyramid.mesh = pyramidMesh;
+	gameObjects.push_back(pyramid);
     
 
     while (!glfwWindowShouldClose(window))
@@ -108,9 +120,12 @@ int main()
         
         myShader.use();
 
+		myShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		myShader.setVec3("lightPos", lightPos);
+		myShader.setVec3("viewPos", camera.Position());
+
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 		glm::mat4 view = camera.getViewMatrix();
-		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
 		
         myShader.setMat4("projection", projection);
         myShader.setMat4("view", view);

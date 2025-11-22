@@ -13,27 +13,34 @@ enum Camera_Movement {
 	RIGHT
 };
 
-float yaw = -90.0f;
-float pitch = 0.0f;
-
 class Camera {
 	glm::vec3 position;
 	glm::vec3 front;
 	glm::vec3 up;
+	glm::vec3 right;
+	glm::vec3 worldUp;
 
+	float yaw;
+	float pitch;
 	float fov;
 	float aspectRatio;
 	float nearPlane;
 	float farPlane;
 public:
-	Camera(glm::vec3 position) :
-		position(0.0f, 0.0f, 3.0f),
+	Camera(glm::vec3 startPosition = glm::vec3(0.0f, 0.0f, 3.0f)) :
 		front(0.0f, 0.0f, -1.0f),
 		up(0.0f, 1.0f, 0.0f),
 		fov(45.0f),
 		aspectRatio(4.0f / 3.0f),
 		nearPlane(0.1f),
-		farPlane(100.0f) {}
+		farPlane(100.0f) 
+	{
+		position = startPosition;
+		worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+		pitch = 0.0f;
+		yaw = -90.0f;
+		updateCameraVectors();
+	}
 
 	glm::mat4 getViewMatrix() const {
 		glm::vec3 target = position + front;
@@ -42,6 +49,10 @@ public:
 
 	glm::mat4 getProjectionMatrix() const {
 		return glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
+	}
+
+	glm::vec3 Position() const {
+		return position;
 	}
 
 	void processKeyboard(Camera_Movement direction, float deltaTime) {
@@ -68,6 +79,7 @@ public:
 			if (pitch < -89.0f)
 				pitch = -89.0f;
 		}
+
 		updateCameraVectors();
 	}
 
