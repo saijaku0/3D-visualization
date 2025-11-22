@@ -1,3 +1,5 @@
+#pragma warning(disable : 4996) // Отключает предупреждение VCR102 для Visual Studio
+
 #ifndef SHADER_H
 #define SHADER_H
 
@@ -72,6 +74,14 @@ public:
 
 	void setMat4(const std::string& name, const glm::mat4& mat) const {
 		glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+	}
+
+	void setVec3(const std::string& name, const glm::vec3& vec) const {
+		glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &vec[0]);
+	}
+
+	void setVec3(const std::string& name, float x, float y, float z) const {
+		glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
 	}
 
 private:

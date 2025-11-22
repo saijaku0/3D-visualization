@@ -9,13 +9,22 @@
 struct GameObject {
 	glm::vec3 position;
 	glm::vec3 rotationAxis;
+	glm::vec3 scale;
+	glm::vec3 color;
+
+	float angle;
 	float rotationSpeed;
-	float scale;
 
 	Mesh* mesh;
 
 	GameObject() : 
-		position(0.0f), rotationAxis(0.0f, 1.0f, 0.0f), rotationSpeed(0.0f), scale(1.0f), mesh(nullptr) {}
+		position(0.0f), 
+		rotationAxis(0.0f, 1.0f, 0.0f), 
+		rotationSpeed(0.0f), 
+		scale(1.0f, 1.0f, 1.0f), 
+		angle(0.0f),
+		color(1.0f, 1.0f, 1.0f),
+		mesh(nullptr) {}
 
 	void draw(const Shader& shader, float time) const {
 		if (!mesh) return;
@@ -23,12 +32,15 @@ struct GameObject {
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, position);
 
-		float angle = time * rotationSpeed;
-		model = glm::rotate(model, angle, rotationAxis);
+		float rotation = angle + (time * rotationSpeed);
+		model = glm::rotate(model, glm::radians(rotation), rotationAxis);
 
-		model = glm::scale(model, glm::vec3(scale));
+		model = glm::scale(model, scale);
+
 
 		shader.setMat4("model", model);
+		shader.setVec3("objectColor", color);
+
 		mesh->Draw();
 	}
 };

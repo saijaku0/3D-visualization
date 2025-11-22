@@ -3,10 +3,6 @@
 #include <iostream>
 #include <vector>
 
-//#include <glm/glm.hpp>
-//#include <glm/gtc/matrix_transform.hpp>
-//#include <glm/gtc/type_ptr.hpp>
-
 #include "GeometryGenerator.h"
 #include "GameObject.h"
 #include "Mesh.h"
@@ -55,29 +51,31 @@ int main()
 
 	std::vector<GameObject> gameObjects;
 
-	GameObject obj1;
-	obj1.position = glm::vec3(-2.0f, 0.0f, 0.0f);
-	obj1.rotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
-	obj1.rotationSpeed = 1.0f;
-	obj1.scale = 1.0f;
-	obj1.mesh = pyramidMesh;
-	gameObjects.push_back(obj1);
+	GameObject floor;
+    floor.position = glm::vec3(0.0f, -2.0f, 0.0f);
+    floor.scale = glm::vec3(10.0f, 0.1f, 5.0f);
+    floor.mesh = cubeMesh;
+	floor.color = glm::vec3(0.6f, 0.6f, 0.6f);
+	gameObjects.push_back(floor);
 
-    GameObject obj2;
-    obj2.position = glm::vec3(1.5f, 0.0f, 0.0f);
-    obj2.rotationAxis = glm::vec3(1.0f, 0.0f, 0.0f);
-    obj2.rotationSpeed = 0.5f;
-    obj2.scale = 0.5f;
-    obj2.mesh = pyramidMesh;
-    gameObjects.push_back(obj2);
+	GameObject wall;
+	wall.position = glm::vec3(0.0f, 1.0f, -2.5f);
+	wall.scale = glm::vec3(1.0f, 5.0f, 4.0f);
+	wall.rotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
+	wall.color = glm::vec3(0.2f, 0.8f, 0.2f);
+	wall.angle = 90.0f;
+    wall.rotationSpeed = 0.0f;
+	wall.mesh = cubeMesh;
+	gameObjects.push_back(wall);
 
-    GameObject obj3;
-    obj3.position = glm::vec3(-1.0f, 0.0f, 0.0f);
-    obj3.rotationAxis = glm::vec3(1.0f, 1.0f, 0.0f);
-    obj3.rotationSpeed = 1.5f;
-    obj3.scale = 0.7f;
-    obj3.mesh = cubeMesh;
-    gameObjects.push_back(obj3);
+    GameObject fan;
+    fan.position = glm::vec3(2.0f, 0.0f, 0.0f);
+    fan.scale = glm::vec3(3.0f, 0.2f, 0.2f); // Длинная палка
+    fan.rotationAxis = glm::vec3(0.0f, 0.0f, 1.0f); // Крутим вокруг Z (как пропеллер)
+    fan.angle = 0.0f;
+    fan.rotationSpeed = 200.0f; // <--- КРУТИТСЯ БЫСТРО (градусов в сек)
+    fan.mesh = cubeMesh;
+    gameObjects.push_back(fan);
     
 
     while (!glfwWindowShouldClose(window))
