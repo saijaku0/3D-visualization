@@ -7,12 +7,23 @@
 #include "GameObject.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Camera.h"
+
+Camera camera(glm::vec3(1.0f, 0.0f, 0.0f));
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 int SCR_WIDTH = 800;
 int SCR_HEIGHT = 600;
+
+float lastx = SCR_WIDTH / 2.0f;
+float lasty = SCR_HEIGHT / 2.0f;
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+bool firstMouse = true;
 
 int main()
 {
@@ -34,6 +45,8 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
 	
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -80,6 +93,9 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
+		float currentFrame = (float)glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -93,8 +109,8 @@ int main()
         myShader.use();
 
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
-		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
+		glm::mat4 view = camera.getViewMatrix();
+		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -6.0f));
 		
         myShader.setMat4("projection", projection);
         myShader.setMat4("view", view);
@@ -117,9 +133,35 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.processKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.processKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.processKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.processKeyboard(RIGHT, deltaTime);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstMouse)
+    {
+        lastx = xpos;
+        lasty = ypos;
+        firstMouse = false;
+    }
+    float xoffset = xpos - lastx;
+    float yoffset = lasty - ypos; 
+
+	lastx = xpos;
+	lasty = ypos;
+
+	camera.processMouseMovement(xoffset, yoffset);
 }
