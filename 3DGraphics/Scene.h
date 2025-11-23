@@ -55,40 +55,15 @@ public:
 	}
 
 	void Init() {
-		GameObject floor;
-		floor.position = glm::vec3(0.0f, -2.0f, 0.0f);
-		floor.scale = glm::vec3(10.0f, 0.1f, 5.0f);
-		floor.mesh = cubeMesh;
-		floor.color = glm::vec3(0.6f, 0.6f, 0.6f);
-		gameObjects.push_back(floor);
+		gameObjects.push_back(CreateObject(cubeMesh, glm::vec3(0, -2, 0), glm::vec3(10, 0.1, 5), glm::vec3(0.6)));
 
-		GameObject wall;
-		wall.position = glm::vec3(0.0f, 1.0f, -2.5f);
-		wall.scale = glm::vec3(1.0f, 5.0f, 4.0f);
-		wall.rotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
-		wall.color = glm::vec3(0.2f, 0.8f, 0.2f);
-		wall.angle = 90.0f;
-		wall.mesh = cubeMesh;
-		gameObjects.push_back(wall);
+		gameObjects.push_back(CreateObject(cubeMesh, glm::vec3(0, 1, -2.5), glm::vec3(1, 5, 4), glm::vec3(0.2, 0.8, 0.2), 90.0f));
 
-		GameObject fan;
-		fan.position = glm::vec3(2.0f, 0.0f, 0.0f);
-		fan.scale = glm::vec3(3.0f, 0.2f, 0.2f);
-		fan.rotationAxis = glm::vec3(0.0f, 0.0f, 1.0f);
-		fan.rotationSpeed = 200.0f;
-		fan.mesh = cubeMesh;
-		gameObjects.push_back(fan);
+		gameObjects.push_back(CreateObject(cubeMesh, glm::vec3(2, 0, 0), glm::vec3(3, 0.2, 0.2), glm::vec3(1), 0.0f, 200.0f, glm::vec3(0, 0, 1)));
 
-		playerObj.position = glm::vec3(0.0f, 0.0f, 5.0f); 
-		playerObj.scale = glm::vec3(0.5f);                
-		playerObj.color = glm::vec3(1.0f, 0.0f, 0.0f);    
-		playerObj.mesh = cubeMesh;
+		gameObjects.push_back(CreateObject(pyramidMesh, glm::vec3(-2, -1, 0), glm::vec3(1), glm::vec3(1)));
 
-		GameObject pyramid;
-		pyramid.position = glm::vec3(-2.0f, -1.0f, 0.0f);
-		pyramid.color = glm::vec3(1.0f, 1.0f, 1.0f);
-		pyramid.mesh = pyramidMesh;
-		gameObjects.push_back(pyramid);
+		playerObj = CreateObject(cubeMesh, glm::vec3(0, 0, 5), glm::vec3(0.5), glm::vec3(1, 0, 0));
 	}
 
 	void ProcessInput(GLFWwindow* window, float deltaTime) {
@@ -240,6 +215,25 @@ private:
 				camera.processKeyboard(direction, deltaTime);
 			}
 		}
+	}
+
+	GameObject CreateObject(Mesh* mesh, 
+		glm::vec3 pos, 
+		glm::vec3 scale, 
+		glm::vec3 color, 
+		float angle = 0.0f, 
+		float rotSpeed = 0.0f, 
+		glm::vec3 rotAxis = glm::vec3(0, 1, 0)) 
+	{
+		GameObject obj;
+		obj.mesh = mesh;
+		obj.position = pos;
+		obj.scale = scale;
+		obj.color = color;
+		obj.angle = angle;
+		obj.rotationSpeed = rotSpeed;
+		obj.rotationAxis = rotAxis;
+		return obj;
 	}
 };
 
