@@ -5,103 +5,114 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
-enum Camera_Movement {
-	FORWARD,
-	BACKWARD,
-	LEFT,
-	RIGHT
-};
+#include "GameObject.h"
+#include "IMoveAble.h"
 
 class Camera {
-	glm::vec3 position;
-	glm::vec3 front;
-	glm::vec3 up;
-	glm::vec3 right;
-	glm::vec3 worldUp;
-
-	float yaw;
-	float pitch;
-	float fov;
-	float aspectRatio;
-	float nearPlane;
-	float farPlane;
 public:
-	Camera(glm::vec3 startPosition = glm::vec3(0.0f, 0.0f, 3.0f)) :
-		front(0.0f, 0.0f, -1.0f),
-		up(0.0f, 1.0f, 0.0f),
-		fov(45.0f),
-		aspectRatio(4.0f / 3.0f),
-		nearPlane(0.1f),
-		farPlane(100.0f) 
-	{
-		position = startPosition;
-		worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-		pitch = 0.0f;
-		yaw = -90.0f;
-		updateCameraVectors();
-	}
+    glm::vec3 position;
+    glm::vec3 front;
+    glm::vec3 up;
+    glm::vec3 right;
+    glm::vec3 worldUp;
 
-	glm::mat4 getViewMatrix() const {
-		glm::vec3 target = position + front;
-		return glm::lookAt(position, target, up);
-	}
+    float yaw;
+    float pitch;
+    float zoom;
+    float mouseSensitivity;
 
-	glm::mat4 getProjectionMatrix() const {
-		return glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
-	}
+    Camera() :
+        front(glm::vec3(0.0f, 0.0f, -1.0f)),
+        movementSpeed(2.5f),
+        mouseSensitivity(0.1f),
+        zoom(45.0f),
+        worldUp(0.0f, 1.0f, 0.0f),
+        yaw(-90.0f), pitch(0.0f)
+    {
+    }
 
-	glm::vec3 getPosition() const {
-		return position;
-	}
+    virtual ~Camera() {} 
 
-	glm::vec3 getFront() const {
-		return front;
-	}
+    glm::mat4 GetViewMatrix() const {
+        return glm::lookAt(position, position + front, up);
+    }
 
-	void setPosition(const glm::vec3& newPosition) {
-		position = newPosition;
-	}
+    glm::mat4 GetProjectionMatrix(float aspectRatio) const {
+        return glm::perspective(glm::radians(zoom), aspectRatio, 0.1f, 100.0f);
+    }
 
-	void processKeyboard(Camera_Movement direction, float deltaTime) {
-		float velocity = 2.5f * deltaTime;
-		if (direction == FORWARD)
-			position += front * velocity;
-		if (direction == BACKWARD)
-			position -= front * velocity;
-		if (direction == LEFT)
-			position -= glm::normalize(glm::cross(front, up)) * velocity;
-		if (direction == RIGHT)
-			position += glm::normalize(glm::cross(front, up)) * velocity;
-	}
+    virtual void Update(float deltaTime) = 0;
+    virtual void ProcessKeyboard(MovementDirection direction, float deltaTime) {} // По умолчанию ничего не делает
 
-	void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true) {
-		float sensitivity = 0.1f;
-		xoffset *= sensitivity;
-		yoffset *= sensitivity;
-		yaw += xoffset;
-		pitch += yoffset;
-		if (constrainPitch) {
-			if (pitch > 89.0f)
-				pitch = 89.0f;
-			if (pitch < -89.0f)
-				pitch = -89.0f;
-		}
+    virtual void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true) {
+        xoffset *= mouseSensitivity;
+        yoffset *= mouseSensitivity;
 
-		updateCameraVectors();
-	}
+        yaw += xoffset;
+        pitch += yoffset;
 
-private:
-	void updateCameraVectors() {
-		glm::vec3 newFront(1.0f, 0.0f, 0.0f);
-		newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-		newFront.y = sin(glm::radians(pitch));
-		newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-		front = glm::normalize(newFront);
-		right = glm::normalize(glm::cross(front, worldUp));
-		up = glm::normalize(glm::cross(right, front));
-	}
+        if (constrainPitch) {
+            if (pitch > 89.0f) pitch = 89.0f;
+            if (pitch < -89.0f) pitch = -89.0f;
+        }
+        updateCameraVectors();
+    }
+
+protected:
+    float movementSpeed;
+
+    void updateCameraVectors() {
+        glm::vec3 newFront;
+        newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        newFront.y = sin(glm::radians(pitch));
+        newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        front = glm::normalize(newFront);
+        right = glm::normalize(glm::cross(front, worldUp));
+        up = glm::normalize(glm::cross(right, front));
+    }
 };
 
-#endif // !CAMERA_H
+class FreeCamera : public Camera, public IMovable {
+public:
+    FreeCamera(glm::vec3 startPos) {
+        position = startPos;
+        updateCameraVectors();
+    }
 
+    // Реализуем метод интерфейса
+    void ProcessMovement(MovementDirection direction, float deltaTime) override {
+        float velocity = movementSpeed * deltaTime;
+
+        if (direction == MOVE_FORWARD)  position += front * velocity;
+        if (direction == MOVE_BACKWARD) position -= front * velocity;
+        if (direction == MOVE_LEFT)     position -= right * velocity;
+        if (direction == MOVE_RIGHT)    position += right * velocity;
+        // JUMP для свободной камеры - это полет вверх (опционально)
+        if (direction == MOVE_JUMP)     position += worldUp * velocity;
+    }
+
+    void Update(float deltaTime) override {
+    }
+};
+
+class AttachedCamera : public Camera {
+    GameObject* target; 
+    glm::vec3 offset;   
+
+public:
+    AttachedCamera(GameObject* targetObj, glm::vec3 offsetVal = glm::vec3(0.0f, 0.8f, 0.0f))
+        : target(targetObj), offset(offsetVal)
+    {
+        updateCameraVectors();
+    }
+
+    void ProcessKeyboard(MovementDirection direction, float deltaTime) override {}
+
+    void Update(float deltaTime) override {
+        if (target) {
+            position = target->position + offset;
+        }
+    }
+};
+
+#endif

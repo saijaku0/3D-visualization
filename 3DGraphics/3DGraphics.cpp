@@ -85,9 +85,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+    GameManager& gm = scene->GetGameManager();
+
     if (scene) {
 		bool isRightDown = (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
-		bool shouldRotation = scene->isGameMode || isRightDown;
+		bool shouldRotation = gm.isGameMode || isRightDown;
         scene->ProcessMouseMovement(xpos, ypos, shouldRotation);
     }
 }
