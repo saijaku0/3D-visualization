@@ -51,8 +51,16 @@ public:
 		return glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
 	}
 
-	glm::vec3 Position() const {
+	glm::vec3 getPosition() const {
 		return position;
+	}
+
+	glm::vec3 getFront() const {
+		return front;
+	}
+
+	void setPosition(const glm::vec3& newPosition) {
+		position = newPosition;
 	}
 
 	void processKeyboard(Camera_Movement direction, float deltaTime) {
@@ -90,6 +98,8 @@ private:
 		newFront.y = sin(glm::radians(pitch));
 		newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 		front = glm::normalize(newFront);
+		right = glm::normalize(glm::cross(front, worldUp));
+		up = glm::normalize(glm::cross(right, front));
 	}
 };
 
