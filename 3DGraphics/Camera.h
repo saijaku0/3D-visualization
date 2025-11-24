@@ -43,6 +43,7 @@ public:
     const glm::vec3& GetFront() const { return front; }
     float& GetYaw() { return yaw; }
     float& GetPitch() { return pitch; }
+    float& GetZoom() { return zoom; }
     glm::mat4 GetViewMatrix() const {
         return glm::lookAt(position, position + front, up);
     }

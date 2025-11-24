@@ -21,6 +21,7 @@
 #include "Renderer.h"
 #include "SceneFactory.h"
 #include "AttachedCamera.h"
+#include "Skybox.h"
 
 class Scene {
 	Mesh* cubeMesh;
@@ -37,6 +38,7 @@ class Scene {
 	Camera* activeCamera;
 	LightingSystem lightingSystem;
 	SceneFactory sceneFactory;
+	Skybox* skybox;
 
 	float gameTime;
 	glm::vec3 pointLightPos;

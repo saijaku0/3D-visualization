@@ -57,6 +57,9 @@
     <ClCompile Include="AttachedCamera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -113,6 +116,9 @@
     <ClInclude Include="AttachedCamera.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DGraphics.rc">
@@ -122,5 +128,7 @@
   <ItemGroup>
     <None Include="shader.vert" />
     <None Include="shader.frag" />
+    <None Include="skybox.vert" />
+    <None Include="skybox.frag" />
   </ItemGroup>
 </Project>

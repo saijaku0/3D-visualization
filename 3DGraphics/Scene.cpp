@@ -21,6 +21,7 @@ Scene::~Scene() {
 	delete pyramidMesh;
 	delete devCamera;
 	delete playerCamera;
+	delete skybox;
 }
 
 void Scene::Init() {
@@ -45,6 +46,18 @@ void Scene::Init() {
 	inputManager.BindKey(GLFW_KEY_A, MOVE_LEFT);
 	inputManager.BindKey(GLFW_KEY_D, MOVE_RIGHT);
 	inputManager.BindKey(GLFW_KEY_SPACE, MOVE_JUMP);
+
+	skybox = new Skybox();
+	std::vector<std::string> faces = {
+		"assets/sky_right.png",
+		"assets/sky_left.png",
+		"assets/sky_top.png",
+		"assets/sky_bottom.png",
+		"assets/sky_front.png",
+		"assets/sky_back.png"
+	};
+
+	skybox->LoadCubemap(faces);
 }
 
 void Scene::ProcessInput(GLFWwindow* window, float deltaTime) {
@@ -82,6 +95,15 @@ void Scene::Draw(Shader& shader, int scrWidth, int scrHeight) {
 		headGizmo.draw(shader, 0);
 
 		shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
+	}
+
+	if (activeCamera) { 
+		glm::mat4 view = activeCamera->GetViewMatrix();
+
+		float aspectRatio = (float)scrWidth / (float)scrHeight;
+		glm::mat4 projection = activeCamera->GetProjectionMatrix(aspectRatio);
+
+		skybox->Draw(view, projection);
 	}
 }
 
