@@ -89,7 +89,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
     if (scene) {
 		bool isRightDown = (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
-		bool shouldRotation = gm.isGameMode || isRightDown;
+		bool shouldRotation = gm.GetGameMode() || isRightDown;
         scene->ProcessMouseMovement(xpos, ypos, shouldRotation);
     }
 }

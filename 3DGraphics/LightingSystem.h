@@ -10,10 +10,10 @@ private:
     // Пока храним просто константы для Phong Model
     glm::vec3 dirLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f);
 
-public:
     static constexpr float POINT_LIGHT_CONSTANT = 1.0f;
     static constexpr float POINT_LIGHT_LINEAR = 0.09f;
     static constexpr float POINT_LIGHT_QUADRATIC = 0.032f;
+public:
 
     LightingSystem(glm::vec3 initialPos) : pointLightPos(initialPos) {}
 
@@ -23,7 +23,7 @@ public:
         pointLightPos = glm::vec3(lightX, 1.0f, lightZ);
     }
 
-    void ApplyUniforms(Shader& shader, const glm::vec3& viewPos) {
+    void ApplyUniforms(Shader& shader, const glm::vec3& viewPos) const {
         shader.setVec3("dirLight.direction", dirLightDirection);
         shader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
         shader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);

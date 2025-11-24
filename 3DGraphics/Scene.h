@@ -11,6 +11,7 @@
 #include "GameObject.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "FreeCamera.h"
 #include "Player.h"
 #include "GeometryGenerator.h"
 #include "IMoveAble.h"
@@ -19,6 +20,7 @@
 #include "LightingSystem.h"
 #include "Renderer.h"
 #include "SceneFactory.h"
+#include "AttachedCamera.h"
 
 class Scene {
 	Mesh* cubeMesh;
@@ -53,13 +55,6 @@ public:
 private:
 	bool updateCursorState(GLFWwindow* window);
 	void handleMovementInput(GLFWwindow* window, float deltaTime);
-	GameObject CreateObject(Mesh* mesh,
-		glm::vec3 pos,
-		glm::vec3 scale,
-		glm::vec3 color,
-		float angle = 0.0f,
-		float rotSpeed = 0.0f,
-		glm::vec3 rotAxis = glm::vec3(0, 1, 0));
 };
 
 #endif // !SCENE_H
