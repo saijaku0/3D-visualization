@@ -13,8 +13,8 @@ void GameObject::draw(const Shader& shader, float time) const {
 
 	model = glm::scale(model, scale);
 
-	shader.setMat4("model", model);
-	shader.setVec3("objectColor", color);
+	shader.set("model", model);
+	shader.set("objectColor", color);
 
 	mesh->Draw();
 }

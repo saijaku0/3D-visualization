@@ -21,8 +21,8 @@ void Renderer::DrawScene(Shader& shader,
     glm::mat4 projection = activeCamera->GetProjectionMatrix(aspectRatio);
     glm::mat4 view = activeCamera->GetViewMatrix();
 
-    shader.setMat4("projection", projection);
-    shader.setMat4("view", view);
+    shader.set("projection", projection);
+    shader.set("view", view);
 
     lightingSystem.ApplyUniforms(shader, activeCamera->GetPosition());
 

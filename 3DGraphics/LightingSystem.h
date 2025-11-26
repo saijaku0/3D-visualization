@@ -24,20 +24,20 @@ public:
     }
 
     void ApplyUniforms(Shader& shader, const glm::vec3& viewPos) const {
-        shader.setVec3("dirLight.direction", dirLightDirection);
+        shader.set("dirLight.direction", dirLightDirection);
         shader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
         shader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
         shader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
-        shader.setVec3("pointLight.position", pointLightPos);
+        shader.set("pointLight.position", pointLightPos);
         shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
         shader.setVec3("pointLight.diffuse", 0.8f, 0.8f, 0.8f);
         shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
-        shader.setFloat("pointLight.constant", POINT_LIGHT_CONSTANT);
-        shader.setFloat("pointLight.linear", POINT_LIGHT_LINEAR);
-        shader.setFloat("pointLight.quadratic", POINT_LIGHT_QUADRATIC);
+        shader.set("pointLight.constant", POINT_LIGHT_CONSTANT);
+        shader.set("pointLight.linear", POINT_LIGHT_LINEAR);
+        shader.set("pointLight.quadratic", POINT_LIGHT_QUADRATIC);
 
-        shader.setVec3("viewPos", viewPos);
+        shader.set("viewPos", viewPos);
     }
 
     const glm::vec3& GetLightPos() const { return pointLightPos; }

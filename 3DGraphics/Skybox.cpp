@@ -97,10 +97,10 @@ void Skybox::Draw(const glm::mat4& view, const glm::mat4& projection) {
 
     glm::mat4 viewNoPos = glm::mat4(glm::mat3(view));
 
-    skyboxShader->setMat4("view", viewNoPos);
-    skyboxShader->setMat4("projection", projection);
+    skyboxShader->set("view", viewNoPos);
+    skyboxShader->set("projection", projection);
 
-    skyboxShader->setInt("skybox", 0);
+    skyboxShader->set("skybox", 0);
 
     glBindVertexArray(skyboxVAO);
     glActiveTexture(GL_TEXTURE0);
