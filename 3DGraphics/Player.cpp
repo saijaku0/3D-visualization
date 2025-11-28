@@ -1,4 +1,5 @@
 #include "Player.h"
+#define PLAYER_H
 
 Player::Player() : GameObject() { 
 	moveSpeed = 7.0f; 

@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#define RENDERER_H
 
 void Renderer::Clear() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);

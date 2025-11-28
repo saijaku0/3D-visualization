@@ -1,7 +1,9 @@
 #include "Skybox.h"
 
+#define SKYBOX_H
 #define STB_IMAGE_IMPLEMENTATION 
 #include "stb_image.h"
+
 Skybox::Skybox() {
     skyboxShader = new Shader("skybox.vert", "skybox.frag");
 

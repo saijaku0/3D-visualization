@@ -1,4 +1,5 @@
 #include "Scene.h"
+#define SCENE_H
 
 Scene::Scene(int width, int height) : 
 	gameManager(width, height), 

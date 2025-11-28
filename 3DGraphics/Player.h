@@ -1,6 +1,5 @@
 #pragma once
 #ifndef PLAYER_H
-#define PLAYER_H
 
 #include "GameObject.h"
 #include "Physics.h"

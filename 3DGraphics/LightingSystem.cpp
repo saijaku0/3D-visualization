@@ -1,1 +1,24 @@
 #include "LightingSystem.h"
+
+void LightingSystem::Update(float gameTime) {
+    float lightX = sin(gameTime) * 2.0f;
+    float lightZ = cos(gameTime) * 2.0f;
+    pointLightPos = glm::vec3(lightX, 1.0f, lightZ);
+}
+
+void LightingSystem::ApplyUniforms(Shader& shader, const glm::vec3& viewPos) const {
+    shader.set("dirLight.direction", dirLightDirection);
+    shader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+    shader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+    shader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+
+    shader.set("pointLight.position", pointLightPos);
+    shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
+    shader.setVec3("pointLight.diffuse", 0.8f, 0.8f, 0.8f);
+    shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+    shader.set("pointLight.constant", POINT_LIGHT_CONSTANT);
+    shader.set("pointLight.linear", POINT_LIGHT_LINEAR);
+    shader.set("pointLight.quadratic", POINT_LIGHT_QUADRATIC);
+
+    shader.set("viewPos", viewPos);
+}

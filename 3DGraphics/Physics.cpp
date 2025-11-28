@@ -1,4 +1,5 @@
 #include "Physics.h"
+#define PHYSICS_H
 
 bool Physics::checkCollisionAABB(const GameObject& one, const GameObject& two) {
 	glm::vec3 position_one = one.position;

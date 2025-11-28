@@ -1,6 +1,5 @@
 #pragma once
 #ifndef SKYBOX_H
-#define SKYBOX_H
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>

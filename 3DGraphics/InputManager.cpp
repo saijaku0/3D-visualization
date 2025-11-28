@@ -1,4 +1,6 @@
 #include "InputManager.h"
+#define INPUT_MANAGER_H
+
 
 void InputManager::BindKey(int glfwKey, MovementDirection direction) {
     keyToAction[glfwKey] = new MoveCommand(direction);
