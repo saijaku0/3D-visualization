@@ -1,20 +1,17 @@
 #include "GameObject.h"
+#include "Mesh.h"
+#include "Shader.h"
 
-void GameObject::draw(const Shader& shader, float time) const {
-	if (!mesh) return;
+void GameObject::Draw(const Shader& shader) const {
+    if (!mesh) {
+        return;
+    }
 
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, position);
+    glm::mat4 modelMatrix = transform.GetModelMatrix();
 
-	if (glm::length(rotationAxis) > 0.0f) {
-		float initialRotation = angle + (time * rotationSpeed);
-		model = glm::rotate(model, glm::radians(initialRotation), rotationAxis);
-	}
+    shader.setMat4("model", modelMatrix);
 
-	model = glm::scale(model, scale);
+    shader.setVec3("objectColor", color);
 
-	shader.set("model", model);
-	shader.set("objectColor", color);
-
-	mesh->Draw();
+    mesh->Draw(shader);
 }

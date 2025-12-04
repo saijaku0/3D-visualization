@@ -1,78 +1,65 @@
 #include "Player.h"
-#define PLAYER_H
+#include "Physics.h"
+#include <iostream>
+#include <cmath>
 
-Player::Player() : GameObject() { 
-	moveSpeed = 7.0f; 
-	jumpForce = 8.0f; 
-	isStatic = false; 
-	scale = glm::vec3(0.5f, 1.8f, 0.5f); 
-	camFront = glm::vec3(0.0f, 0.0f, -1.0f); 
-	camRight = glm::vec3(1.0f, 0.0f, 0.0f); 
-	wishDir = glm::vec3(0.0f); 
-} 
+Player::Player() : GameObject() {
+    moveSpeed = 7.0f;
+    jumpForce = 8.0f;
+    isStatic = false;
 
-void Player::Update(float dt, const std::vector<GameObject>& mapObjects, glm::vec3 front, glm::vec3 right) { 
-	camFront = front; 
-	camRight = right;
+    transform.Scale = glm::vec3(0.5f, 1.8f, 0.5f);
 
-	if (glm::length(wishDir) > 0.0f) { 
-		wishDir = glm::normalize(wishDir); 
-		velocity.x = wishDir.x * moveSpeed; 
-		velocity.z = wishDir.z * moveSpeed; 
-	} else { 
-		velocity.x = 0.0f; 
-		velocity.z = 0.0f; 
-	} 
-	
-	wishDir = glm::vec3(0.0f); 
-	Physics::moveWithCollision(*this, dt, mapObjects); 
-} 
+    camFront = glm::vec3(0.0f, 0.0f, -1.0f);
+    camRight = glm::vec3(1.0f, 0.0f, 0.0f);
+    wishDir = glm::vec3(0.0f);
 
-void Player::ProcessMovement(MovementDirection direction, float deltaTime) { 
-	glm::vec3 front = glm::normalize(glm::vec3(camFront.x, 0.0f, camFront.z)); 
-	glm::vec3 right = glm::normalize(glm::vec3(camRight.x, 0.0f, camRight.z)); 
-
-	switch (direction) { 
-	case MOVE_FORWARD: 
-		wishDir += front; 
-		break; 
-	
-	case MOVE_BACKWARD: 
-		wishDir -= front; 
-		break; 
-	
-	case MOVE_LEFT: 
-		wishDir -= right; 
-		break; 
-	
-	case MOVE_RIGHT: 
-		wishDir += right; 
-		break; 
-	
-	case MOVE_JUMP: 
-		JumpProcess(); 
-		break; 
-	
-	default: 
-		break; 
-	} 
-} 
-
-void Player::JumpProcess() { 
-	if (std::abs(velocity.y) < 0.01f && onGround) 
-		velocity.y = jumpForce; 
+    color = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
-void Player::UpdateCameraVectors(glm::vec3 front, glm::vec3 right) { 
-	camFront = front; 
-	camFront.y = 0.0f; 
-	
-	if (glm::length(camFront) > 0.0001f) 
-		camFront = glm::normalize(camFront); 
-	else 
-		camFront = glm::vec3(0.0f, 0.0f, -1.0f); 
-	
-	camRight = right; 
-	camRight.y = 0.0f; 
-	camRight = glm::normalize(camRight); 
+void Player::Update(float dt, const std::vector<GameObject>& mapObjects) {
+    glm::vec3 wishVelocity = glm::vec3(0.0f);
+
+    if (glm::length(wishDir) > 0.0f) {
+        wishDir = glm::normalize(wishDir);
+        wishVelocity.x = wishDir.x * moveSpeed;
+        wishVelocity.z = wishDir.z * moveSpeed;
+    }
+
+    if (onGround) {
+        velocity.x = wishVelocity.x;
+        velocity.z = wishVelocity.z;
+    }
+    else if (glm::length(wishVelocity) > 0.0f) {
+        velocity.x = glm::mix(velocity.x, wishVelocity.x, 0.1f);
+        velocity.z = glm::mix(velocity.z, wishVelocity.z, 0.1f);
+    }
+
+    wishDir = glm::vec3(0.0f);
+
+    Physics::moveWithCollision(*this, dt, mapObjects);
+}
+
+void Player::ProcessInput(GLFWwindow* window, glm::vec3 front, glm::vec3 right) {
+    camFront = glm::normalize(glm::vec3(front.x, 0.0f, front.z));
+    camRight = glm::normalize(glm::vec3(right.x, 0.0f, right.z));
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        wishDir += camFront;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        wishDir -= camFront;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        wishDir -= camRight;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        wishDir += camRight;
+
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        Jump();
+}
+
+void Player::Jump() {
+    if (onGround && std::abs(velocity.y) < 0.1f) {
+        velocity.y = jumpForce;
+        onGround = false; 
+    }
 }

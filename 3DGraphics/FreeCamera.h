@@ -3,15 +3,15 @@
 #define FREECAMERA_H
 
 #include "Camera.h"
-#include "IMoveAble.h"
 
-class FreeCamera : public Camera, public IMovable {
+class FreeCamera : public Camera {
 public:
-    FreeCamera(glm::vec3 startPos);
-
-    void ProcessMovement(MovementDirection direction, float deltaTime) override;
-
-    void Update(float deltaTime) override { }
+    FreeCamera(glm::vec3 startPos)
+        : Camera(startPos) 
+    {
+        updateCameraVectors();
+    }
+    void ProcessKeyboard(CameraMovement direction, float deltaTime) override;
 };
 
 #endif // !FREECAMERA_H

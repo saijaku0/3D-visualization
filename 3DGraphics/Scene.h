@@ -1,62 +1,62 @@
 #pragma once
 #ifndef SCENE_H
+#define SCENE_H 
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <vector>
-#include <iostream>
-#include <map>
+#include <memory> 
 
 #include "GameObject.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "FreeCamera.h"
+#include "AttachedCamera.h"
 #include "Player.h"
-#include "GeometryGenerator.h"
-#include "IMoveAble.h"
-#include "InputManager.h"
-#include "GameManager.h"
 #include "LightingSystem.h"
 #include "Renderer.h"
-#include "SceneFactory.h"
-#include "AttachedCamera.h"
+#include "GameManager.h"
 #include "Skybox.h"
+#include "SceneFactory.h"
+#include "InputManager.h" 
+#include "Ball.h"
 
 class Scene {
-	Mesh* cubeMesh;
-	Mesh* pyramidMesh;
+    std::shared_ptr<Mesh> cubeMesh;
+    std::shared_ptr<Mesh> pyramidMesh;
 
-	std::vector<GameObject> gameObjects;
-	InputManager inputManager;
-	IMovable* currentController;
-	Player playerObj;
-	Renderer renderer;
-	GameManager gameManager;
-	FreeCamera* devCamera;
-	AttachedCamera* playerCamera;
-	Camera* activeCamera;
-	LightingSystem lightingSystem;
-	SceneFactory sceneFactory;
-	Skybox* skybox;
+    std::vector<GameObject> gameObjects;
+    Player playerObj;
+    Ball myBall;
 
-	float gameTime;
-	glm::vec3 pointLightPos;
+    Renderer renderer;
+    GameManager gameManager;
+
+    std::unique_ptr<FreeCamera> devCamera;
+    std::unique_ptr<AttachedCamera> playerCamera;
+    Camera* activeCamera;
+
+    LightingSystem lightingSystem;
+    Skybox* skybox;
+
+    float gameTime;
+    glm::vec3 pointLightPos;
+
 public:
-	Scene(int width, int height);
-	~Scene();
+    Scene(int width, int height);
+    ~Scene();
 
-	void Init();
-	void ProcessInput(GLFWwindow* window, float deltaTime);
-	void ProcessMouseMovement(double xpos, double ypos, bool enableRotation);
-	void Update(float deltaTime);
-	void Draw(Shader& shader, int scrWidth, int scrHeight);
-	GameManager& GetGameManager() {
-		return gameManager;
-	}
+    void Init();
+    void ProcessInput(GLFWwindow* window, float deltaTime);
+    void ProcessMouseMovement(double xpos, double ypos, bool enableRotation);
+    void Update(float deltaTime);
+    void Draw(Shader& shader, int scrWidth, int scrHeight);
+
+    GameManager& GetGameManager() { return gameManager; }
+
 private:
-	bool updateCursorState(GLFWwindow* window);
-	void handleMovementInput(GLFWwindow* window, float deltaTime);
+    bool updateCursorState(GLFWwindow* window);
+    void handleMovementInput(GLFWwindow* window, float deltaTime);
 };
 
 #endif // !SCENE_H
-

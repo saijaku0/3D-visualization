@@ -1,123 +1,162 @@
 #include "Scene.h"
-#define SCENE_H
 
-Scene::Scene(int width, int height) : 
-	gameManager(width, height), 
-	lightingSystem(glm::vec3(0.0f, 1.0f, 0.0f)), 
-	renderer(),
-	gameTime(0.0f),
-	pointLightPos(0.0f, 1.0f, 0.0f),
-	cubeMesh(nullptr),
-	pyramidMesh(nullptr),
-	devCamera(nullptr),
-	playerCamera(nullptr),
-	activeCamera(nullptr),
-	currentController(nullptr)
+Scene::Scene(int width, int height) :
+    gameManager(width, height),
+    lightingSystem(glm::vec3(0.0f, 1.0f, 0.0f)),
+    renderer(),
+    gameTime(0.0f),
+    pointLightPos(0.0f, 1.0f, 0.0f),
+    activeCamera(nullptr),
+    skybox(nullptr)
 {
-	Init();
+    Init();
 }
 
 Scene::~Scene() {
-	delete cubeMesh;
-	delete pyramidMesh;
-	delete devCamera;
-	delete playerCamera;
-	delete skybox;
+    delete skybox;
 }
 
 void Scene::Init() {
-	SceneFactory::CreateResources(cubeMesh, pyramidMesh);
-	SceneFactory::LoadDefaultScene(gameObjects, cubeMesh, pyramidMesh);
+    SceneFactory::CreateResources(cubeMesh, pyramidMesh);
+    SceneFactory::LoadDefaultScene(gameObjects, cubeMesh, pyramidMesh);
 
-	playerObj.moveSpeed = 10.0f;
-	playerObj.position = glm::vec3(0.0f, 0.0f, 5.0f);
-	playerObj.scale = glm::vec3(0.5f);
-	playerObj.color = glm::vec3(1.0f, 0.0f, 0.0f);
-	playerObj.mesh = cubeMesh;
-	playerObj.isStatic = false;
+    playerObj.transform.Position = glm::vec3(0.0f, 0.0f, 5.0f);
+    playerObj.transform.Scale = glm::vec3(0.5f);
+    playerObj.color = glm::vec3(1.0f, 0.0f, 0.0f);
+    playerObj.mesh = cubeMesh; 
+    playerObj.isStatic = false;
 
-	devCamera = new FreeCamera(glm::vec3(0.0f, 5.0f, 10.0f));
-	playerCamera = new AttachedCamera(&playerObj, glm::vec3(0.0f, 0.6f, 0.0f));
+    myBall.mesh = cubeMesh;
+    myBall.transform.Position = glm::vec3(0.0f, 5.0f, 0.0f); 
+    myBall.transform.Scale = glm::vec3(0.5f);
+    myBall.color = glm::vec3(0.0f, 1.0f, 1.0f); 
+    myBall.elasticity = 0.3f; 
 
-	activeCamera = devCamera;
-	currentController = devCamera;
+    devCamera = std::make_unique<FreeCamera>(glm::vec3(0.0f, 5.0f, 10.0f));
 
-	inputManager.BindKey(GLFW_KEY_W, MOVE_FORWARD);
-	inputManager.BindKey(GLFW_KEY_S, MOVE_BACKWARD);
-	inputManager.BindKey(GLFW_KEY_A, MOVE_LEFT);
-	inputManager.BindKey(GLFW_KEY_D, MOVE_RIGHT);
-	inputManager.BindKey(GLFW_KEY_SPACE, MOVE_JUMP);
+    playerCamera = std::make_unique<AttachedCamera>(&playerObj, glm::vec3(0.0f, 0.6f, 0.0f));
 
-	skybox = new Skybox();
-	std::vector<std::string> faces = {
-		"assets/sky_right.png",
-		"assets/sky_left.png",
-		"assets/sky_top.png",
-		"assets/sky_bottom.png",
-		"assets/sky_front.png",
-		"assets/sky_back.png"
-	};
+    activeCamera = devCamera.get();
 
-	skybox->LoadCubemap(faces);
+    skybox = new Skybox();
+    std::vector<std::string> faces = {
+        "assets/sky_right.png", "assets/sky_left.png",
+        "assets/sky_top.png",   "assets/sky_bottom.png",
+        "assets/sky_front.png", "assets/sky_back.png"
+    };
+    skybox->LoadCubemap(faces);
 }
 
 void Scene::ProcessInput(GLFWwindow* window, float deltaTime) {
-	gameManager.ProcessModeSwitch(window, devCamera, playerCamera, &playerObj, &activeCamera, &currentController);
+    gameManager.ProcessModeSwitch(
+        window,
+        devCamera.get(),
+        playerCamera.get(),
+        &playerObj,
+        activeCamera
+    );
 
-	bool cursorEnabled = gameManager.IsMouseRotationActive(window);
+    if (gameManager.IsGameMode()) {
+        playerObj.ProcessInput(
+            window,
+            activeCamera->GetFront(),
+            activeCamera->GetRight()
+        );
+    }
+    else {
+        handleMovementInput(window, deltaTime);
+    }
 
-	if (cursorEnabled)
-		handleMovementInput(window, deltaTime);
+    bool cursorEnabled = gameManager.IsMouseRotationActive(window);
+    if (cursorEnabled)
+        handleMovementInput(window, deltaTime);
 }
 
-void Scene::Draw(Shader& shader, int scrWidth, int scrHeight) {
-	renderer.Clear();
+void Scene::handleMovementInput(GLFWwindow* window, float deltaTime) {
+    if (!activeCamera) return;
 
-	renderer.DrawScene(
-		shader,
-		activeCamera,
-		lightingSystem,
-		gameObjects,
-		cubeMesh, 
-		gameTime,
-		scrWidth, scrHeight
-	);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        activeCamera->ProcessKeyboard(CameraMovement::Forward, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        activeCamera->ProcessKeyboard(CameraMovement::Backward, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        activeCamera->ProcessKeyboard(CameraMovement::Left, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        activeCamera->ProcessKeyboard(CameraMovement::Right, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        activeCamera->ProcessKeyboard(CameraMovement::Up, deltaTime); 
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        activeCamera->ProcessKeyboard(CameraMovement::Down, deltaTime);
 
-	if (!gameManager.GetGameMode()) {
-
-		shader.setVec3("pointLight.ambient", 1.0f, 1.0f, 1.0f);
-		playerObj.draw(shader, 0);
-
-		GameObject headGizmo;
-		headGizmo.position = playerCamera->GetPosition();
-		headGizmo.scale = glm::vec3(0.2f);
-		headGizmo.color = glm::vec3(0.0f, 0.0f, 1.0f);
-		headGizmo.mesh = cubeMesh;
-		headGizmo.draw(shader, 0);
-
-		shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-	}
-
-	if (activeCamera) { 
-		glm::mat4 view = activeCamera->GetViewMatrix();
-
-		float aspectRatio = (float)scrWidth / (float)scrHeight;
-		glm::mat4 projection = activeCamera->GetProjectionMatrix(aspectRatio);
-
-		skybox->Draw(view, projection);
-	}
+    if (activeCamera == playerCamera.get()) {
+        playerObj.ProcessInput(
+            window,
+            activeCamera->GetFront(),
+            activeCamera->GetRight()
+        );
+    }
 }
 
 void Scene::Update(float deltaTime) {
-	activeCamera->Update(deltaTime);
+    activeCamera->Update(deltaTime);
 
-	if (!gameManager.GetGameMode()) return;
+    if (gameManager.IsGameMode()) {
+        playerObj.Update(deltaTime, gameObjects);
 
-	gameTime += deltaTime;
+        //std::vector<GameObject> ballObstacles = gameObjects;
+        //ballObstacles.push_back(playerObj);
+        myBall.Update(deltaTime, gameObjects);
 
-	lightingSystem.Update(deltaTime);
+        if (Physics::checkCollisionAABB(myBall, playerObj)) {
 
-	playerObj.Update(deltaTime, gameObjects, activeCamera->GetFront(), activeCamera->GetRight());
+            myBall.velocity = -myBall.velocity * myBall.elasticity;
+
+            glm::vec3 separationVector = myBall.transform.Position - playerObj.transform.Position;
+            myBall.transform.Position += glm::normalize(separationVector) * 1.0f; 
+        }
+    }
+
+    if (activeCamera)
+        activeCamera->Update(deltaTime);
+
+    gameTime += deltaTime;
+}
+
+void Scene::Draw(Shader& shader, int scrWidth, int scrHeight) {
+    renderer.Clear();
+
+    renderer.DrawScene(
+        shader,
+        activeCamera,
+        lightingSystem,
+        gameObjects,
+        cubeMesh,
+        gameTime,
+        scrWidth, scrHeight
+    );
+
+    myBall.Draw(shader);
+
+    if (!gameManager.IsGameMode()) {
+        shader.setVec3("pointLight.ambient", 1.0f, 1.0f, 1.0f);
+        playerObj.Draw(shader);
+
+        GameObject headGizmo;
+        headGizmo.transform.Position = playerCamera->GetPosition(); 
+        headGizmo.transform.Scale = glm::vec3(0.2f);
+        headGizmo.color = glm::vec3(0.0f, 0.0f, 1.0f);
+        headGizmo.mesh = cubeMesh;
+        headGizmo.Draw(shader);
+
+        shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
+    }
+
+    if (activeCamera && skybox) {
+        glm::mat4 view = glm::mat4(glm::mat3(activeCamera->GetViewMatrix())); 
+        float aspectRatio = (float)scrWidth / (float)scrHeight;
+        glm::mat4 projection = activeCamera->GetProjectionMatrix(aspectRatio);
+        skybox->Draw(view, projection);
+    }
 }
 
 void Scene::ProcessMouseMovement(double xpos, double ypos, bool enableRotation) {
@@ -139,21 +178,12 @@ void Scene::ProcessMouseMovement(double xpos, double ypos, bool enableRotation) 
 	gameManager.GetLastX() = xpos;
 	gameManager.GetLastY() = ypos;
 
-	activeCamera->ProcessMouseMovement(xoffset, yoffset);
-}
-
-void Scene::handleMovementInput(GLFWwindow* window, float deltaTime) {
-	if (!currentController) return;
-
-	if (gameManager.GetGameMode()) {
-		playerObj.UpdateCameraVectors(activeCamera->GetFront(), activeCamera->GetRight());
-	}
-
-	inputManager.HandleInput(window, *currentController, deltaTime);
+    if (activeCamera)
+	    activeCamera->ProcessMouseMovement(xoffset, yoffset);
 }
 
 bool Scene::updateCursorState(GLFWwindow* window) {
-	if (gameManager.GetGameMode()) return true;
+	if (gameManager.IsGameMode()) return true;
 
 	bool rightClick = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
 

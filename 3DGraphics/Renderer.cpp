@@ -1,5 +1,4 @@
 #include "Renderer.h"
-#define RENDERER_H
 
 void Renderer::Clear() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -10,7 +9,7 @@ void Renderer::DrawScene(Shader& shader,
     Camera* activeCamera,
     LightingSystem& lightingSystem,
     const std::vector<GameObject>& gameObjects,
-    Mesh* cubeGizmoMesh,
+    std::shared_ptr<Mesh> cubeGizmoMesh, 
     float gameTime,
     int scrWidth, int scrHeight)
 {
@@ -27,26 +26,22 @@ void Renderer::DrawScene(Shader& shader,
 
     lightingSystem.ApplyUniforms(shader, activeCamera->GetPosition());
 
-    for (auto& obj : gameObjects) {
-        obj.draw(shader, gameTime);
+    for (const auto& obj : gameObjects) {
+        obj.Draw(shader);
     }
 
     DrawGizmos(shader, lightingSystem, cubeGizmoMesh);
 }
 
-/*
-* Private
-*/
-
-void Renderer::DrawGizmos(Shader& shader, LightingSystem& lightingSystem, Mesh* cubeGizmoMesh) {
+void Renderer::DrawGizmos(Shader& shader, LightingSystem& lightingSystem, std::shared_ptr<Mesh> cubeGizmoMesh) {
     shader.setVec3("pointLight.ambient", 1.0f, 1.0f, 1.0f);
 
     GameObject gizmoLamp;
-    gizmoLamp.position = lightingSystem.GetLightPos();
-    gizmoLamp.scale = glm::vec3(0.2f);
+    gizmoLamp.transform.Position = lightingSystem.GetLightPos();
+    gizmoLamp.transform.Scale = glm::vec3(0.2f);
     gizmoLamp.color = glm::vec3(1.0f, 1.0f, 0.0f);
     gizmoLamp.mesh = cubeGizmoMesh;
-    gizmoLamp.draw(shader, 0);
+    gizmoLamp.Draw(shader);
 
     shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
 }

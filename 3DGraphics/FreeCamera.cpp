@@ -1,35 +1,20 @@
 #include "FreeCamera.h"
 
-FreeCamera::FreeCamera(glm::vec3 startPos) {
-    GetPosition() = startPos;
-    updateCameraVectors();
-}
+void FreeCamera::ProcessKeyboard(CameraMovement direction, float deltaTime) {
+    float velocity = m_MovementSpeed * deltaTime;
 
-void FreeCamera::ProcessMovement(MovementDirection direction, float deltaTime) {
-    float velocity = movementSpeed * deltaTime;
+    if (direction == CameraMovement::Forward)
+        m_Position += m_Front * velocity;
+    if (direction == CameraMovement::Backward)
+        m_Position -= m_Front * velocity;
+    if (direction == CameraMovement::Left)
+        m_Position -= m_Right * velocity;
+    if (direction == CameraMovement::Right)
+        m_Position += m_Right * velocity;
 
-    switch (direction) {
-    case MOVE_FORWARD:
-        GetPosition() += GetFront() * velocity;
-        break;
-
-    case MOVE_BACKWARD:
-        GetPosition() -= GetFront() * velocity;
-        break;
-
-    case MOVE_LEFT:
-        GetPosition() -= GetRight() * velocity;
-        break;
-
-    case MOVE_RIGHT:
-        GetPosition() += GetRight() * velocity;
-        break;
-
-    case MOVE_JUMP:
-        GetPosition() += GetWorldUp() * velocity;
-        break;
-
-    default:
-        break;
-    }
+    // ≈сли хочешь насто€щий "полет" (как в редакторе Unity/Unreal):
+    if (direction == CameraMovement::Up)
+        m_Position += m_Up * velocity;
+    if (direction == CameraMovement::Down)
+        m_Position -= m_Up * velocity;
 }

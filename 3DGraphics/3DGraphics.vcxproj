@@ -139,7 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3DGraphics.cpp" />
-    <ClCompile Include="AttachedCamera.cpp" />
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -156,13 +156,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttachedCamera.h" />
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryGenerator.h" />
-    <ClInclude Include="IMoveAble.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightingSystem.h" />
     <ClInclude Include="Mesh.h" />

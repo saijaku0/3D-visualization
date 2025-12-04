@@ -1,56 +1,88 @@
 #include "SceneFactory.h"
-#define SCENEFACTORY
 
-void SceneFactory::CreateResources(Mesh*& cubeMesh, Mesh*& pyramidMesh) {
-    cubeMesh = GeometryGenerator::CreateCube();
-    pyramidMesh = GeometryGenerator::CreatePyramid();
+void SceneFactory::CreateResources(std::shared_ptr<Mesh>& cubeMesh, std::shared_ptr<Mesh>& pyramidMesh) {
+    cubeMesh = std::shared_ptr<Mesh>(GeometryGenerator::CreateCube());
+    pyramidMesh = std::shared_ptr<Mesh>(GeometryGenerator::CreatePyramid());
 }
 
-
-void SceneFactory::LoadDefaultScene(std::vector<GameObject>& objects, Mesh* cubeMesh, Mesh* pyramidMesh) {
-    // Пол
-    GameObject floor;
-    floor.position = glm::vec3(0.0f, -2.0f, 0.0f);
-    floor.scale = glm::vec3(15.0f, 0.1f, 15.0f);
-    floor.mesh = cubeMesh;
-    floor.color = glm::vec3(0.6f, 0.6f, 0.6f);
+void SceneFactory::LoadDefaultScene(std::vector<GameObject>& objects, std::shared_ptr<Mesh> cubeMesh, std::shared_ptr<Mesh> pyramidMesh) {
+    // --- Пол ---
+    GameObject floor = CreateObject(
+        cubeMesh,
+        glm::vec3(0.0f, -2.0f, 0.0f),       
+        glm::vec3(15.0f, 0.1f, 15.0f),      
+        glm::vec3(0.6f, 0.6f, 0.6f),        
+        glm::vec3(0.0f, 0.0f, 0.0f)         
+    );
+    floor.isStatic = true;
     objects.push_back(floor);
 
-    // Стена
-    GameObject wall;
-    wall.position = glm::vec3(0.0f, 1.0f, -2.5f);
-    wall.scale = glm::vec3(1.0f, 5.0f, 4.0f);
-    wall.rotationAxis = glm::vec3(0.0f, 1.0f, 0.0f);
-    wall.color = glm::vec3(0.2f, 0.8f, 0.2f);
-    wall.angle = 90.0f;
-    wall.mesh = cubeMesh;
-    objects.push_back(wall);
+    // --- Стена (Задняя) ---
+    GameObject wallBack = CreateObject(
+        cubeMesh,
+        glm::vec3(0.0f, -1.0f, -7.0f),
+        glm::vec3(0.5f, 2.5f, 15.0f),
+        glm::vec3(0.2f, 0.8f, 0.2f),
+        glm::vec3(0.0f, 90.0f, 0.0f) 
+    );
+    wallBack.isStatic = true;
+    objects.push_back(wallBack);
 
-    // Вентилятор
-    GameObject fan;
-    fan.position = glm::vec3(2.0f, 0.0f, 0.0f);
-    fan.scale = glm::vec3(3.0f, 0.2f, 0.2f);
-    fan.rotationAxis = glm::vec3(0.0f, 0.0f, 1.0f);
-    fan.rotationSpeed = 200.0f;
-    fan.mesh = cubeMesh;
-    objects.push_back(fan);
+    // --- Стена (Передняя) ---
+    GameObject wallFront = CreateObject(
+        cubeMesh,
+        glm::vec3(0.0f, -1.0f, 7.0f),
+        glm::vec3(0.5f, 2.5f, 15.0f),
+        glm::vec3(0.2f, 0.8f, 0.2f),
+        glm::vec3(0.0f, 90.0f, 0.0f)
+    );
+    wallFront.isStatic = true;
+    objects.push_back(wallFront);
 
-    // Пирамида
-    GameObject pyramid;
-    pyramid.position = glm::vec3(-2.0f, -1.0f, 0.0f);
-    pyramid.color = glm::vec3(1.0f, 1.0f, 1.0f);
-    pyramid.mesh = pyramidMesh;
+    // --- Стена (Правая) ---
+    GameObject wallRight = CreateObject(
+        cubeMesh,
+        glm::vec3(7.0f, -1.0f, 0.0f),
+        glm::vec3(0.5f, 2.5f, 15.0f),
+        glm::vec3(0.2f, 0.8f, 0.2f),
+        glm::vec3(0.0f, 0.0f, 0.0f)
+    );
+    wallRight.isStatic = true;
+    objects.push_back(wallRight);
+
+    // --- Стена (Левая) ---
+    GameObject wallLeft = CreateObject(
+        cubeMesh,
+        glm::vec3(-7.0f, -1.0f, 0.0f),
+        glm::vec3(0.5f, 2.5f, 15.0f),
+        glm::vec3(0.2f, 0.8f, 0.2f),
+        glm::vec3(0.0f, 0.0f, 0.0f)
+    );
+    wallLeft.isStatic = true;
+    objects.push_back(wallLeft);
+
+    // --- Пирамида ---
+    GameObject pyramid = CreateObject(
+        pyramidMesh,
+        glm::vec3(-2.0f, -2.0f, 0.0f),
+        glm::vec3(1.0f),
+        glm::vec3(1.0f, 1.0f, 1.0f),
+        glm::vec3(0.0f)
+    );
+    pyramid.isStatic = true;
     objects.push_back(pyramid);
 }
 
-GameObject SceneFactory::CreateObject(Mesh* mesh, glm::vec3 pos, glm::vec3 scale, glm::vec3 color, float angle, float rotSpeed, glm::vec3 rotAxis) {
+GameObject SceneFactory::CreateObject(std::shared_ptr<Mesh> mesh, glm::vec3 pos, glm::vec3 scale, glm::vec3 color, glm::vec3 rotation) {
     GameObject obj;
-    obj.mesh = mesh;
-    obj.position = pos;
-    obj.scale = scale;
+
+    obj.transform.Position = pos;
+    obj.transform.Scale = scale;
+    obj.transform.Rotation = rotation;
+
     obj.color = color;
-    obj.angle = angle;
-    obj.rotationSpeed = rotSpeed;
-    obj.rotationAxis = rotAxis;
+    obj.mesh = mesh; 
+    // obj.rotationSpeed = rotSpeed; // Пока убрали, так как в Transform этого нет, но можно добавить логику позже
+
     return obj;
 }

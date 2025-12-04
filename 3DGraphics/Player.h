@@ -1,13 +1,15 @@
 #pragma once
 #ifndef PLAYER_H
+#define PLAYER_H 
 
 #include "GameObject.h"
-#include "Physics.h"
-#include "IMoveAble.h"
-#include <GLFW/glfw3.h>
+#include <GLFW/glfw3.h> 
 #include <vector>
+#include <glm/glm.hpp>
 
-class Player : public GameObject, public IMovable {
+class Physics;
+
+class Player : public GameObject {
 public:
     float moveSpeed;
     float jumpForce;
@@ -20,10 +22,12 @@ public:
     Player();
     virtual ~Player() = default;
 
-    void Update(float dt, const std::vector<GameObject>& mapObjects, glm::vec3 front, glm::vec3 right);
-    void ProcessMovement(MovementDirection direction, float deltaTime) override;
-    void JumpProcess();
-    void UpdateCameraVectors(glm::vec3 front, glm::vec3 right);
+    void ProcessInput(GLFWwindow* window, glm::vec3 front, glm::vec3 right);
+
+    void Update(float dt, const std::vector<GameObject>& mapObjects);
+
+private:
+    void Jump();
 };
 
 #endif // !PLAYER_H

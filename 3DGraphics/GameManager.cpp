@@ -6,7 +6,12 @@ GameManager::GameManager(int width, int height) :
     escKeyPressed(false),
     lastX(static_cast<float>(width) / 2.0f),
     lastY(static_cast<float>(height) / 2.0f)
-{ }
+{
+}
+
+void GameManager::ToggleGameMode() {
+    isGameMode = !isGameMode;
+}
 
 bool GameManager::IsMouseRotationActive(GLFWwindow* window) {
     if (isGameMode) return true;
@@ -24,12 +29,12 @@ bool GameManager::IsMouseRotationActive(GLFWwindow* window) {
     }
 }
 
-void GameManager::ProcessModeSwitch(GLFWwindow* window, FreeCamera* devCam, AttachedCamera* playerCam, Player* playerObj, Camera** activeCamPtr, IMovable** currentControllerPtr) {
+void GameManager::ProcessModeSwitch(GLFWwindow* window, FreeCamera* devCam, AttachedCamera* playerCam, GameObject* playerObj, Camera*& activeCamera) {
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         if (!escKeyPressed) {
             if (isGameMode) {
-                switchToDeveloperMode(window, devCam, playerCam, playerObj, activeCamPtr, currentControllerPtr);
+                switchToDeveloperMode(window, devCam, playerCam, playerObj, activeCamera);
             }
             else {
                 glfwSetWindowShouldClose(window, true);
@@ -42,15 +47,15 @@ void GameManager::ProcessModeSwitch(GLFWwindow* window, FreeCamera* devCam, Atta
     }
 
     if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && !isGameMode) {
-        switchToGameMode(window, devCam, playerCam, playerObj, activeCamPtr, currentControllerPtr);
+        switchToGameMode(window, devCam, playerCam, activeCamera);
     }
 }
 
 /*
-* Private
+* Private Implementation
 */
 
-void GameManager::switchToGameMode(GLFWwindow* window, FreeCamera* devCam, AttachedCamera* playerCam, Player* playerObj, Camera** activeCamPtr, IMovable** currentControllerPtr) {
+void GameManager::switchToGameMode(GLFWwindow* window, FreeCamera* devCam, AttachedCamera* playerCam, Camera*& activeCamera) {
     if (isGameMode) return;
 
     isGameMode = true;
@@ -58,31 +63,33 @@ void GameManager::switchToGameMode(GLFWwindow* window, FreeCamera* devCam, Attac
 
     syncCameraRotation(playerCam, devCam);
 
-    *activeCamPtr = playerCam;
-    *currentControllerPtr = playerObj;
+    activeCamera = playerCam;
 
     firstMouse = true;
-    std::cout << "GAME MODE" << std::endl;
+    std::cout << "GAME MODE ACTIVATED" << std::endl;
 }
 
-void GameManager::switchToDeveloperMode(GLFWwindow* window, FreeCamera* devCam, AttachedCamera* playerCam, Player* playerObj, Camera** activeCamPtr, IMovable** currentControllerPtr) {
-    if (!isGameMode) return;
+void GameManager::switchToDeveloperMode(GLFWwindow* window, FreeCamera* devCam, AttachedCamera* playerCam, GameObject* playerObj, Camera*& activeCamera) {
 
     isGameMode = false;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-    devCam->GetPosition() = playerObj->position - (playerObj->scale.z * 2.0f * playerCam->GetFront()) + glm::vec3(0, 2, 0);
+    glm::vec3 playerPos = playerObj->transform.Position;
+    float playerScale = playerObj->transform.Scale.y;
+
+    glm::vec3 newPos = playerPos - (playerCam->GetFront() * 2.0f * playerScale) + glm::vec3(0, 2, 0);
+
+    devCam->SetPosition(newPos);
 
     syncCameraRotation(devCam, playerCam);
 
-    *activeCamPtr = devCam;
-    *currentControllerPtr = devCam;
+    activeCamera = devCam;
 
-    std::cout << "DEVELOPER MODE" << std::endl;
+    std::cout << "DEVELOPER MODE ACTIVATED" << std::endl;
 }
 
-void GameManager::syncCameraRotation(Camera* dst, Camera* src) {
-    dst->GetYaw()   = src->GetYaw();
-    dst->GetPitch() = src->GetPitch();
+void GameManager::syncCameraRotation(Camera* dst, const Camera* src) {
+    dst->SetRotation(src->GetYaw(), src->GetPitch());
+
     dst->ProcessMouseMovement(0, 0);
 }

@@ -1,23 +1,31 @@
 #pragma once
 #ifndef INPUT_MANAGER_H
+#define INPUT_MANAGER_H
 
 #include <GLFW/glfw3.h>
 #include <map>
-#include "Command.h"
-#include "IMoveAble.h"
+#include <vector>
+
+enum class GameAction {
+    MoveForward,
+    MoveBackward,
+    MoveLeft,
+    MoveRight,
+    Jump,
+    Sprint,
+    Crouch
+};
 
 class InputManager {
 private:
-    std::map<int, Command*> keyToAction;
+    std::map<int, GameAction> keyBindings;
 
 public:
-    InputManager() = default;
+    InputManager();
 
-    void BindKey(int glfwKey, MovementDirection direction);
+    void BindKey(int glfwKey, GameAction action);
 
-    void HandleInput(GLFWwindow* window, IMovable& target, float deltaTime);
-
-    ~InputManager();
+    bool IsActionActive(GLFWwindow* window, GameAction action) const;
 };
 
 #endif

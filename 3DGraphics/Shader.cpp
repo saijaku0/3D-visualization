@@ -47,10 +47,6 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
 	glDeleteShader(fragment);
 }
 
-void Shader::setVec3(const std::string& name, float x, float y, float z) const {
-	glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
-}
-
 void Shader::use() const {
 	glUseProgram(ID);
 }

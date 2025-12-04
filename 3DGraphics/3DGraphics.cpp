@@ -34,8 +34,8 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	glfwSetCursorPosCallback(window, mouse_callback);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -49,7 +49,6 @@ int main()
 	Shader myShader("shader.vert", "shader.frag");
 
     scene = new Scene(SCR_WIDTH, SCR_HEIGHT);
-	scene->Init();
 
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
@@ -64,15 +63,13 @@ int main()
 
         scene->Update(deltaTime);
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glfwGetWindowSize(window, &SCR_WIDTH, &SCR_HEIGHT);
+        //glfwGetWindowSize(window, &SCR_WIDTH, &SCR_HEIGHT);
         scene->Draw(myShader, SCR_WIDTH, SCR_HEIGHT);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
 	delete scene;
     glfwTerminate();
     return 0;
@@ -81,15 +78,17 @@ int main()
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+    SCR_WIDTH = width;
+    SCR_HEIGHT = height;
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    GameManager& gm = scene->GetGameManager();
-
     if (scene) {
+        GameManager& gm = scene->GetGameManager();
+
 		bool isRightDown = (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
-		bool shouldRotation = gm.GetGameMode() || isRightDown;
+		bool shouldRotation = gm.IsGameMode() || isRightDown;
         scene->ProcessMouseMovement(xpos, ypos, shouldRotation);
     }
 }
