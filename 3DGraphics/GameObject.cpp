@@ -1,17 +1,8 @@
 #include "GameObject.h"
-#include "Mesh.h"
-#include "Shader.h"
 
-void GameObject::Draw(const Shader& shader) const {
-    if (!mesh) {
-        return;
-    }
+GameObject::GameObject()
+{ }
 
-    glm::mat4 modelMatrix = transform.GetModelMatrix();
-
-    shader.setMat4("model", modelMatrix);
-
-    shader.setVec3("objectColor", color);
-
-    mesh->Draw(shader);
+void GameObject::AddComponent(std::unique_ptr<Component> component) {
+	m_component.push_back(std::move(component));
 }

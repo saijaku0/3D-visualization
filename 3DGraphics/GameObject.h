@@ -2,57 +2,47 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <memory> 
+#include <vector>
+#include <memory>
 
-class Mesh;
-class Shader;
-
-struct Transform {
-    glm::vec3 Position = glm::vec3(0.0f);
-    glm::vec3 Rotation = glm::vec3(0.0f); 
-    glm::vec3 Scale = glm::vec3(1.0f);
-
-    glm::mat4 GetModelMatrix() const {
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, Position);
-        model = glm::rotate(model, glm::radians(Rotation.x), glm::vec3(1, 0, 0));
-        model = glm::rotate(model, glm::radians(Rotation.y), glm::vec3(0, 1, 0));
-        model = glm::rotate(model, glm::radians(Rotation.z), glm::vec3(0, 0, 1));
-        model = glm::scale(model, Scale);
-        return model;
-    }
-};
+#include "Component.h"
+#include "Transform.h"
 
 class GameObject {
-    Transform m_transform; 
-public:
-    std::shared_ptr<Mesh> mesh;
-
-    glm::vec3 color;
-    glm::vec3 velocity;
-
-    bool isStatic;
-    bool onGround;
+    Transform m_transform;
+    std::vector<std::unique_ptr<Component>> m_component;
 
 public:
-    GameObject()
-        : color(1.0f), velocity(0.0f), isStatic(false), onGround(false) {}
-
+    GameObject();
     virtual ~GameObject() = default;
 
-    const glm::vec3& GetPosition() const { return m_transform.Position; }
-    const glm::vec3& GetRotation() const { return m_transform.Rotation; }
-    const glm::vec3& GetScale() const { return m_transform.Scale; }
+    template<typename T>
+    T* GetComponent() const;
+    template<typename T>
+    std::vector<T*> getComponents();
 
-    /*void Draw(const Shader& shader) const;
-
-    void UpdatePhysics(float deltaTime) {
-        if (!isStatic) {
-            transform.Position += velocity * deltaTime;
-        }
-    }*/
+    void AddComponent(std::unique_ptr<Component> component);
+    
 };
+
+template<typename T>
+T* GameObject::GetComponent() const {
+    for (auto& component : m_component) {
+        if (dynamic_cast<T*>(component.get()))
+            return dynamic_cast<T*>(component.get());
+    }
+    return nullptr;
+}
+
+template<typename T>
+std::vector<T*> GameObject::getComponents() {
+    std::vector<T*> components;
+    for (auto& component : this->components) {
+        if (dynamic_cast<T*>(component)) {
+            components.push_back(dynamic_cast<T*>(component));
+        }
+    }
+    return components;
+}
 
 #endif
