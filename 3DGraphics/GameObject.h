@@ -19,9 +19,9 @@ public:
     template<typename T>
     T* GetComponent() const;
     template<typename T>
-    std::vector<T*> getComponents() const;
+    std::vector<T*> GetComponents() const;
 
-    Transform* GetTransformPtr();
+    const Transform* GetTransformPtr() const;
     void AddComponent(std::unique_ptr<Component> component);
     
 };
@@ -36,7 +36,7 @@ T* GameObject::GetComponent() const {
 }
 
 template<typename T>
-std::vector<T*> GameObject::getComponents() const {
+std::vector<T*> GameObject::GetComponents() const {
     std::vector<T*> components;
     for (const auto& component : m_component) {
         if (T* specificComponent = dynamic_cast<T*>(component.get())) {

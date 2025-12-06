@@ -1,6 +1,6 @@
 #include "RigidbodyComponent.h"
 
-void RigidbodyComponent::AddForce(const glm::mat4 force) {
+void RigidbodyComponent::AddForce(const glm::vec3 force) {
 	if (isStatic) return;
 
 	velocity += force / mass;

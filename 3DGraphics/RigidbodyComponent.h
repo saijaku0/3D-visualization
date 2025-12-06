@@ -17,7 +17,7 @@ public:
 
     virtual ~RigidbodyComponent() = default;
 
-    void AddForce(const glm::mat4 force);
+    void AddForce(const glm::vec3 force);
 
     void Stop();
 };
