@@ -141,6 +141,7 @@
     <ClCompile Include="3DGraphics.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
