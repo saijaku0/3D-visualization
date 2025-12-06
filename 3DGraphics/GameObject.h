@@ -26,9 +26,8 @@ struct Transform {
 };
 
 class GameObject {
+    Transform m_transform; 
 public:
-    Transform transform; 
-
     std::shared_ptr<Mesh> mesh;
 
     glm::vec3 color;
@@ -39,19 +38,21 @@ public:
 
 public:
     GameObject()
-        : color(1.0f), velocity(0.0f), isStatic(false), onGround(false)
-    {
-    }
+        : color(1.0f), velocity(0.0f), isStatic(false), onGround(false) {}
 
     virtual ~GameObject() = default;
-    
-    void Draw(const Shader& shader) const;
+
+    const glm::vec3& GetPosition() const { return m_transform.Position; }
+    const glm::vec3& GetRotation() const { return m_transform.Rotation; }
+    const glm::vec3& GetScale() const { return m_transform.Scale; }
+
+    /*void Draw(const Shader& shader) const;
 
     void UpdatePhysics(float deltaTime) {
         if (!isStatic) {
             transform.Position += velocity * deltaTime;
         }
-    }
+    }*/
 };
 
 #endif
