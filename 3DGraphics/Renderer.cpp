@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include <glm/glm.hpp>
+
 void Renderer::Clear() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -8,40 +10,55 @@ void Renderer::Clear() {
 void Renderer::DrawScene(Shader& shader,
     Camera* activeCamera,
     LightingSystem& lightingSystem,
-    const std::vector<GameObject>& gameObjects,
-    std::shared_ptr<Mesh> cubeGizmoMesh, 
+    const std::vector<std::unique_ptr<GameObject>>& gameObjects,
+    std::shared_ptr<Mesh> cubeGizmoMesh,
     float gameTime,
     int scrWidth, int scrHeight)
 {
     shader.use();
 
-    if (scrHeight == 0) scrHeight = 1;
-    float aspectRatio = (float)scrWidth / (float)scrHeight;
-
-    glm::mat4 projection = activeCamera->GetProjectionMatrix(aspectRatio);
+    glm::mat4 projection = glm::perspective(glm::radians(activeCamera->GetZoom()), (float)scrWidth / (float)scrHeight, 0.1f, 100.0f);
     glm::mat4 view = activeCamera->GetViewMatrix();
 
     shader.set("projection", projection);
     shader.set("view", view);
+    shader.setVec3("viewPos", activeCamera->GetPosition());
 
-    lightingSystem.ApplyUniforms(shader, activeCamera->GetPosition());
+    lightingSystem.ApplyUniforms(shader);
 
     for (const auto& obj : gameObjects) {
-        obj.Draw(shader);
+        auto meshRenderer = obj->GetComponent<MeshRendererComponent>();
+
+        if(!meshRenderer || !meshRenderer->mesh) continue;
+
+        Transform* transform = obj->GetTransformPtr();
+
+        if (transform) {
+            glm::mat4 model = transform->GetModelMatrix();
+            shader.setMat4("model", model);
+        }
+
+        meshRenderer->mesh->Draw(shader);
     }
 
     DrawGizmos(shader, lightingSystem, cubeGizmoMesh);
 }
 
-void Renderer::DrawGizmos(Shader& shader, LightingSystem& lightingSystem, std::shared_ptr<Mesh> cubeGizmoMesh) {
-    shader.setVec3("pointLight.ambient", 1.0f, 1.0f, 1.0f);
+void Renderer::DrawGizmos(Shader& shader, const LightingSystem& lightingSystem, std::shared_ptr<Mesh> debugMesh) {
+    if (!debugMesh) return;
 
-    GameObject gizmoLamp;
-    gizmoLamp.transform.Position = lightingSystem.GetLightPos();
-    gizmoLamp.transform.Scale = glm::vec3(0.2f);
-    gizmoLamp.color = glm::vec3(1.0f, 1.0f, 0.0f);
-    gizmoLamp.mesh = cubeGizmoMesh;
-    gizmoLamp.Draw(shader);
+    for (const auto& light : lightingSystem.pointLights) {
 
-    shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
+        glm::mat4 model = glm::mat4(1.0f);
+
+        model = glm::translate(model, light.position);
+
+        model = glm::scale(model, glm::vec3(0.2f));
+
+        shader.setMat4("model", model);
+
+        shader.setVec3("objectColor", light.diffuse);
+
+        debugMesh->Draw(shader);
+    }
 }

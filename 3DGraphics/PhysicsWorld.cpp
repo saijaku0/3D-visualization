@@ -72,7 +72,7 @@ void PhysicsWorld::ResolveCollision(RigidbodyComponent* rbA, RigidbodyComponent*
         else if (colB->GetColliderType() == ColliderType::Sphere) {
             auto* sphereB = static_cast<SphereColliderComponent*>(colB);
             result = Collision::SphereVsBox(*sphereB, transB, *boxA, transA);
-            if (result.isColliding) result.normal = -result.normal; // Разворачиваем нормаль
+            if (result.isColliding) result.normal = -result.normal;
         }
     }
     else if (colA->GetColliderType() == ColliderType::Sphere) {
