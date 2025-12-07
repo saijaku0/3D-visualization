@@ -140,25 +140,36 @@
   <ItemGroup>
     <ClCompile Include="3DGraphics.cpp" />
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="BoxColliderComponent.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ColliderComponent.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightingSystem.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PhysicsWorld.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="SphereColliderComponent.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttachedCamera.h" />
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColliderComponent.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="FreeCamera.h" />
@@ -169,13 +180,17 @@
     <ClInclude Include="LightingSystem.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="PhysicsWorld.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="SphereColliderComponent.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DGraphics.rc" />
