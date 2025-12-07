@@ -15,15 +15,9 @@ public:
         Update(0.0f);
     }
 
-    void Update(float deltaTime) override {
-        if (target) {
-            m_Position = target->transform.Position + offset;
-        }
-    }
+    void Update(float deltaTime) override;
 
-    void SetTarget(const GameObject* newTarget) {
-        target = newTarget;
-    }
+    void SetTarget(const GameObject* newTarget) { target = newTarget; }
 };
 
 #endif // !ATTACHEDCAMERA_H
