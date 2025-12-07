@@ -5,7 +5,7 @@ out vec4 FragColor;
 
 in vec3 Normal;
 in vec3 FragPos;
-in vec2 TexCoord;
+in vec2 TexCoords;
 
 struct Direction {
 	vec3 direction;
@@ -61,7 +61,7 @@ void main()
 	for(int i = 0; i < NR_POINT_LIGHTS; i++)
 		result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
 
-	FragColor = texture(ourTexture, TexCoord) * vec4(result * objectColor, 1.0);
+	FragColor = texture(ourTexture, TexCoords) * vec4(result * objectColor, 1.0);
 }
 
 vec3 CalcDirLight(Direction light, vec3 normal, vec3 viewDir) {
