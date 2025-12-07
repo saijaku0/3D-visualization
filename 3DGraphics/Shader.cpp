@@ -47,6 +47,11 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
 	glDeleteShader(fragment);
 }
 
+Shader::Shader(Shader&& other) noexcept
+	: ID(other.ID), uniformCache(std::move(other.uniformCache)) {
+	other.ID = 0;
+}
+
 void Shader::use() const {
 	glUseProgram(ID);
 }
@@ -54,6 +59,19 @@ void Shader::use() const {
 /*
 * private
 */
+
+int Shader::getUniformLocation(const std::string& name) const {
+	if (uniformCache.find(name) != uniformCache.end())
+		return uniformCache[name];
+
+	int location = glGetUniformLocation(ID, name.c_str());
+	if (location == -1) {
+		std::cerr << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
+	}
+
+	uniformCache[name] = location;
+	return location;
+}
 
 void Shader::checkCompileErrors(unsigned int shader, std::string type) {
 	int success;
