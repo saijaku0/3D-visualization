@@ -1,24 +1,38 @@
 #include "LightingSystem.h"
 
-void LightingSystem::Update(float gameTime) {
-    float lightX = sin(gameTime) * 2.0f;
-    float lightZ = cos(gameTime) * 2.0f;
-    pointLightPos = glm::vec3(lightX, 1.0f, lightZ);
+void LightingSystem::AddPointLight(const glm::vec3& pos, const glm::vec3& color = glm::vec3(1.0f)) {
+	PointLight light;
+
+	light.position = pos;
+	light.diffuse = color;
+
+	light.ambient = color * 0.1f;
+	light.specular = glm::vec3(1.0f);
+
+
+	light.constant = 1.0f;
+	light.linear = 0.09f;
+	light.quadratic = 0.032f;
+
+	pointLights.push_back(light);
 }
 
-void LightingSystem::ApplyUniforms(Shader& shader, const glm::vec3& viewPos) const {
-    shader.set("dirLight.direction", dirLightDirection);
-    shader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-    shader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-    shader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+void LightingSystem::ApplyUniforms(Shader& shader) const {
+	shader.setVec3("dirLight.direction", dirLight.direction);
+	shader.setVec3("dirLight.ambient", dirLight.ambient);
+	shader.setVec3("dirLight.diffuse", dirLight.diffuse);
+	shader.setVec3("dirLight.specular", dirLight.specular);
 
-    shader.set("pointLight.position", pointLightPos);
-    shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-    shader.setVec3("pointLight.diffuse", 0.8f, 0.8f, 0.8f);
-    shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
-    shader.set("pointLight.constant", POINT_LIGHT_CONSTANT);
-    shader.set("pointLight.linear", POINT_LIGHT_LINEAR);
-    shader.set("pointLight.quadratic", POINT_LIGHT_QUADRATIC);
+	for (size_t i = 0; i < pointLights.size(); i++) {
+		std::string baseName = "pointLights[" + std::to_string(i) + "]";
 
-    shader.set("viewPos", viewPos);
+		shader.setVec3(baseName + ".position", pointLights[i].position);
+		shader.setVec3(baseName + ".ambient", pointLights[i].ambient);
+		shader.setVec3(baseName + ".diffuse", pointLights[i].diffuse);
+		shader.setVec3(baseName + ".specular", pointLights[i].specular);
+
+		shader.setFloat(baseName + ".constant", pointLights[i].constant);
+		shader.setFloat(baseName + ".linear", pointLights[i].linear);
+		shader.setFloat(baseName + ".quadratic", pointLights[i].quadratic);
+	}
 }

@@ -81,9 +81,6 @@
     <ClCompile Include="RigidbodyComponent.cpp">
       <Filter>Исходные файлы\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Исходные файлы\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsWorld.cpp">
       <Filter>Исходные файлы\Physics</Filter>
     </ClCompile>
@@ -162,9 +159,6 @@
       <Filter>Файлы заголовков\Core</Filter>
     </ClInclude>
     <ClInclude Include="RigidbodyComponent.h">
-      <Filter>Файлы заголовков\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
       <Filter>Файлы заголовков\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">

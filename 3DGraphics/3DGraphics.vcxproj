@@ -151,7 +151,6 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightingSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PhysicsWorld.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -179,7 +178,6 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightingSystem.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsWorld.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Renderer.h" />
