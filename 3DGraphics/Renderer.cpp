@@ -38,18 +38,7 @@ void Renderer::DrawScene(Shader& shader,
             shader.setMat4("model", model);
         }
 
-        if (meshRenderer->color.x != 0.0f || meshRenderer->color.y != 0.0f || meshRenderer->color.z != 0.0f) {
-            std::cout << "Sending Color: "
-                << meshRenderer->color.x << ", "
-                << meshRenderer->color.y << ", "
-                << meshRenderer->color.z << std::endl;
-        }
-        else {
-            std::cout << "Sending Black Color (0,0,0)!" << std::endl;
-        }
-
-        //shader.setVec3("objectColor", meshRenderer->color);
-        shader.setVec3("objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        shader.setVec3("objectColor", meshRenderer->color);
 
         meshRenderer->mesh->Draw(shader);
     }
