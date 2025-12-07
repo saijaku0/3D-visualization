@@ -1,65 +1,31 @@
 #include "Player.h"
-#include "Physics.h"
+#include "ResourceManager.h"
+#include "MeshRendererComponent.h"
+#include "RigidbodyComponent.h"
+#include "BoxColliderComponent.h"
+#include "PlayerControllerComponent.h"
 #include <iostream>
 #include <cmath>
 
-Player::Player() : GameObject() {
-    moveSpeed = 7.0f;
-    jumpForce = 8.0f;
-    isStatic = false;
+Player::Player(InputManager* input, Camera* camera) : GameObject() {
+    GetTransformPtr()->SetPosition(glm::vec3(0, 2, 0));
+    GetTransformPtr()->SetScale(glm::vec3(1.0f));
 
-    transform.Scale = glm::vec3(0.5f, 1.8f, 0.5f);
+    auto meshRenderer = std::make_unique<MeshRendererComponent>(this);
+    meshRenderer->mesh = ResourceManager::GetMesh("cube");
+    AddComponent(std::move(meshRenderer));
 
-    camFront = glm::vec3(0.0f, 0.0f, -1.0f);
-    camRight = glm::vec3(1.0f, 0.0f, 0.0f);
-    wishDir = glm::vec3(0.0f);
+    auto rb = std::make_unique<RigidbodyComponent>(this);
+    rb->mass = 80.0f;
+    rb->drag = 0.1f; 
+    rb->useGravity = true;
+    rb->isStatic = false;
+    AddComponent(std::move(rb));
 
-    color = glm::vec3(0.0f, 1.0f, 0.0f);
-}
+    auto collider = std::make_unique<BoxColliderComponent>(this);
+    collider->size = glm::vec3(0.5f, 1.8f, 0.5f);
+    AddComponent(std::move(collider));
 
-void Player::Update(float dt, const std::vector<GameObject>& mapObjects) {
-    glm::vec3 wishVelocity = glm::vec3(0.0f);
-
-    if (glm::length(wishDir) > 0.0f) {
-        wishDir = glm::normalize(wishDir);
-        wishVelocity.x = wishDir.x * moveSpeed;
-        wishVelocity.z = wishDir.z * moveSpeed;
-    }
-
-    if (onGround) {
-        velocity.x = wishVelocity.x;
-        velocity.z = wishVelocity.z;
-    }
-    else if (glm::length(wishVelocity) > 0.0f) {
-        velocity.x = glm::mix(velocity.x, wishVelocity.x, 0.1f);
-        velocity.z = glm::mix(velocity.z, wishVelocity.z, 0.1f);
-    }
-
-    wishDir = glm::vec3(0.0f);
-
-    Physics::moveWithCollision(*this, dt, mapObjects);
-}
-
-void Player::ProcessInput(GLFWwindow* window, glm::vec3 front, glm::vec3 right) {
-    camFront = glm::normalize(glm::vec3(front.x, 0.0f, front.z));
-    camRight = glm::normalize(glm::vec3(right.x, 0.0f, right.z));
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        wishDir += camFront;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        wishDir -= camFront;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        wishDir -= camRight;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        wishDir += camRight;
-
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        Jump();
-}
-
-void Player::Jump() {
-    if (onGround && std::abs(velocity.y) < 0.1f) {
-        velocity.y = jumpForce;
-        onGround = false; 
-    }
+    auto controller = std::make_unique<PlayerControllerComponent>(this, input, camera);
+    AddComponent(std::move(controller));
 }

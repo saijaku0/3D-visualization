@@ -1,88 +1,108 @@
 #include "SceneFactory.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "ResourceManager.h"
 
-void SceneFactory::CreateResources(std::shared_ptr<Mesh>& cubeMesh, std::shared_ptr<Mesh>& pyramidMesh) {
-    cubeMesh = std::shared_ptr<Mesh>(GeometryGenerator::CreateCube());
-    pyramidMesh = std::shared_ptr<Mesh>(GeometryGenerator::CreatePyramid());
-}
+#include "MeshRendererComponent.h"
+#include "RigidbodyComponent.h"
+#include "BoxColliderComponent.h"
+#include "PhysicsWorld.h"
 
-void SceneFactory::LoadDefaultScene(std::vector<GameObject>& objects, std::shared_ptr<Mesh> cubeMesh, std::shared_ptr<Mesh> pyramidMesh) {
+void SceneFactory::LoadDefaultScene(std::vector<std::unique_ptr<GameObject>>& objects, PhysicsWorld* physicsWorld) {
+
     // --- Пол ---
-    GameObject floor = CreateObject(
-        cubeMesh,
-        glm::vec3(0.0f, -2.0f, 0.0f),       
-        glm::vec3(15.0f, 0.1f, 15.0f),      
-        glm::vec3(0.6f, 0.6f, 0.6f),        
-        glm::vec3(0.0f, 0.0f, 0.0f)         
-    );
-    floor.isStatic = true;
-    objects.push_back(floor);
+    objects.push_back(CreateBox(
+        "cube",
+        glm::vec3(0.0f, -2.0f, 0.0f),
+        glm::vec3(30.0f, 1.0f, 30.0f),
+        glm::vec3(0.0f),
+        true, // Статичный
+        physicsWorld
+    ));
 
-    // --- Стена (Задняя) ---
-    GameObject wallBack = CreateObject(
-        cubeMesh,
-        glm::vec3(0.0f, -1.0f, -7.0f),
-        glm::vec3(0.5f, 2.5f, 15.0f),
-        glm::vec3(0.2f, 0.8f, 0.2f),
-        glm::vec3(0.0f, 90.0f, 0.0f) 
-    );
-    wallBack.isStatic = true;
-    objects.push_back(wallBack);
+    // --- Стены ---
+    // Задняя
+    objects.push_back(CreateBox(
+        "cube",
+        glm::vec3(0.0f, 0.5f, -15.0f),
+        glm::vec3(30.0f, 5.0f, 1.0f),
+        glm::vec3(0.0f),
+        true,
+        physicsWorld
+    ));
 
-    // --- Стена (Передняя) ---
-    GameObject wallFront = CreateObject(
-        cubeMesh,
-        glm::vec3(0.0f, -1.0f, 7.0f),
-        glm::vec3(0.5f, 2.5f, 15.0f),
-        glm::vec3(0.2f, 0.8f, 0.2f),
-        glm::vec3(0.0f, 90.0f, 0.0f)
-    );
-    wallFront.isStatic = true;
-    objects.push_back(wallFront);
+    // Передняя
+    objects.push_back(CreateBox(
+        "cube",
+        glm::vec3(0.0f, 0.5f, 15.0f),
+        glm::vec3(30.0f, 5.0f, 1.0f),
+        glm::vec3(0.0f),
+        true,
+        physicsWorld
+    ));
 
-    // --- Стена (Правая) ---
-    GameObject wallRight = CreateObject(
-        cubeMesh,
-        glm::vec3(7.0f, -1.0f, 0.0f),
-        glm::vec3(0.5f, 2.5f, 15.0f),
-        glm::vec3(0.2f, 0.8f, 0.2f),
-        glm::vec3(0.0f, 0.0f, 0.0f)
-    );
-    wallRight.isStatic = true;
-    objects.push_back(wallRight);
+    // Левая
+    objects.push_back(CreateBox(
+        "cube",
+        glm::vec3(-15.0f, 0.5f, 0.0f),
+        glm::vec3(1.0f, 5.0f, 30.0f),
+        glm::vec3(0.0f),
+        true,
+        physicsWorld
+    ));
 
-    // --- Стена (Левая) ---
-    GameObject wallLeft = CreateObject(
-        cubeMesh,
-        glm::vec3(-7.0f, -1.0f, 0.0f),
-        glm::vec3(0.5f, 2.5f, 15.0f),
-        glm::vec3(0.2f, 0.8f, 0.2f),
-        glm::vec3(0.0f, 0.0f, 0.0f)
-    );
-    wallLeft.isStatic = true;
-    objects.push_back(wallLeft);
+    // Правая
+    objects.push_back(CreateBox(
+        "cube",
+        glm::vec3(15.0f, 0.5f, 0.0f),
+        glm::vec3(1.0f, 5.0f, 30.0f),
+        glm::vec3(0.0f),
+        true,
+        physicsWorld
+    ));
 
-    // --- Пирамида ---
-    GameObject pyramid = CreateObject(
-        pyramidMesh,
-        glm::vec3(-2.0f, -2.0f, 0.0f),
+    // Можно добавить случайные кубики
+    objects.push_back(CreateBox(
+        "cube",
+        glm::vec3(5.0f, 5.0f, 5.0f), 
         glm::vec3(1.0f),
-        glm::vec3(1.0f, 1.0f, 1.0f),
-        glm::vec3(0.0f)
-    );
-    pyramid.isStatic = true;
-    objects.push_back(pyramid);
+        glm::vec3(45.0f, 45.0f, 0.0f),
+        false, 
+        physicsWorld
+    ));
 }
 
-GameObject SceneFactory::CreateObject(std::shared_ptr<Mesh> mesh, glm::vec3 pos, glm::vec3 scale, glm::vec3 color, glm::vec3 rotation) {
-    GameObject obj;
+std::unique_ptr<GameObject> SceneFactory::CreateBox(
+    const std::string& meshName,
+    glm::vec3 pos,
+    glm::vec3 scale,
+    glm::vec3 rotation,
+    bool isStatic,
+    PhysicsWorld* physicsWorld)
+{
+    auto obj = std::make_unique<GameObject>();
+    Transform* t = obj->GetTransformPtr();
 
-    obj.transform.Position = pos;
-    obj.transform.Scale = scale;
-    obj.transform.Rotation = rotation;
+    t->SetPosition(pos);
+    t->SetScale(scale);
 
-    obj.color = color;
-    obj.mesh = mesh; 
-    // obj.rotationSpeed = rotSpeed; // Пока убрали, так как в Transform этого нет, но можно добавить логику позже
+    auto render = std::make_unique<MeshRendererComponent>(obj.get());
+    render->mesh = ResourceManager::GetMesh(meshName);
+    obj->AddComponent(std::move(render));
+
+    auto rb = std::make_unique<RigidbodyComponent>(obj.get());
+    rb->isStatic = isStatic;
+    rb->mass = isStatic ? 0.0f : 1.0f;
+
+    if (physicsWorld) {
+        physicsWorld->AddBody(rb.get());
+    }
+
+    obj->AddComponent(std::move(rb));
+
+    auto col = std::make_unique<BoxColliderComponent>(obj.get());
+    col->size = scale;
+    obj->AddComponent(std::move(col));
 
     return obj;
 }

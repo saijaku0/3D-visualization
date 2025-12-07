@@ -9,5 +9,7 @@ class MeshRendererComponent : public Component {
 public:
 	std::shared_ptr<Mesh> mesh;
 
+	glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+
 	MeshRendererComponent(GameObject* owner) : Component(owner) {}
 };

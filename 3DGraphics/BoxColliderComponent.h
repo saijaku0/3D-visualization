@@ -11,5 +11,9 @@ public:
     virtual ~BoxColliderComponent() = default;
 
     glm::vec3 GetWorldSize() const;
+
+    ColliderType GetColliderType() const override {
+        return ColliderType::Box;
+    }
 };
 

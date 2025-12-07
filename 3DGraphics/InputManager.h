@@ -2,6 +2,7 @@
 #ifndef INPUT_MANAGER_H
 #define INPUT_MANAGER_H
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <map>
 #include <vector>
@@ -13,19 +14,21 @@ enum class GameAction {
     MoveRight,
     Jump,
     Sprint,
-    Crouch
+    Crouch, 
+    Fire
 };
 
 class InputManager {
-private:
     std::map<int, GameAction> keyBindings;
+    GLFWwindow* m_window;
 
 public:
-    InputManager();
+    InputManager(GLFWwindow* window);
 
     void BindKey(int glfwKey, GameAction action);
 
-    bool IsActionActive(GLFWwindow* window, GameAction action) const;
+    bool GetButton(GameAction action) const;
+    bool GetButtonDown(GameAction action) const;
 };
 
 #endif

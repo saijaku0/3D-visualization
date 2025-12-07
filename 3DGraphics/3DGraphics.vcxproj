@@ -139,7 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3DGraphics.cpp" />
-    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="AttachedCamera.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
@@ -151,9 +151,12 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightingSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshRendererComponent.h" />
     <ClCompile Include="PhysicsWorld.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerControllerComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RigidbodyComponent.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
@@ -164,12 +167,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttachedCamera.h" />
-    <ClInclude Include="Ball.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameManager.h" />
@@ -180,8 +181,10 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PhysicsWorld.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerControllerComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RigidbodyComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneFactory.h" />

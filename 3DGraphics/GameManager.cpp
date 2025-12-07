@@ -1,4 +1,10 @@
 #include "GameManager.h"
+#include <iostream>
+
+#include "FreeCamera.h"
+#include "AttachedCamera.h"
+#include "GameObject.h"
+#include "Transform.h" 
 
 GameManager::GameManager(int width, int height) :
     isGameMode(false),
@@ -74,8 +80,9 @@ void GameManager::switchToDeveloperMode(GLFWwindow* window, FreeCamera* devCam, 
     isGameMode = false;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-    glm::vec3 playerPos = playerObj->transform.Position;
-    float playerScale = playerObj->transform.Scale.y;
+    Transform* t = playerObj->GetTransformPtr();
+    glm::vec3 playerPos = t->GetPosition();
+    float playerScale = t->GetScale().y;
 
     glm::vec3 newPos = playerPos - (playerCam->GetFront() * 2.0f * playerScale) + glm::vec3(0, 2, 0);
 
@@ -90,6 +97,4 @@ void GameManager::switchToDeveloperMode(GLFWwindow* window, FreeCamera* devCam, 
 
 void GameManager::syncCameraRotation(Camera* dst, const Camera* src) {
     dst->SetRotation(src->GetYaw(), src->GetPitch());
-
-    dst->ProcessMouseMovement(0, 0);
 }

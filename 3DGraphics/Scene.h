@@ -7,56 +7,52 @@
 #include <vector>
 #include <memory> 
 
-#include "GameObject.h"
-#include "Shader.h"
-#include "Camera.h"
-#include "FreeCamera.h"
-#include "AttachedCamera.h"
-#include "Player.h"
+#include "PhysicsWorld.h"
 #include "LightingSystem.h"
 #include "Renderer.h"
-#include "GameManager.h"
 #include "Skybox.h"
-#include "SceneFactory.h"
-#include "InputManager.h" 
-#include "Ball.h"
+#include "FreeCamera.h"
+#include "AttachedCamera.h"
+#include "GameObject.h"
+#include "GameManager.h"
+#include "InputManager.h"
 
 class Scene {
-    std::shared_ptr<Mesh> cubeMesh;
-    std::shared_ptr<Mesh> pyramidMesh;
+    PhysicsWorld m_physicsWorld;
 
-    std::vector<GameObject> gameObjects;
-    Player playerObj;
-    Ball myBall;
+    LightingSystem m_lightingSystem;
 
-    Renderer renderer;
-    GameManager gameManager;
+    Renderer m_renderer;
 
-    std::unique_ptr<FreeCamera> devCamera;
-    std::unique_ptr<AttachedCamera> playerCamera;
-    Camera* activeCamera;
+    std::vector<std::unique_ptr<GameObject>> m_gameObjects;
 
-    LightingSystem lightingSystem;
-    Skybox* skybox;
+    GameObject* m_player = nullptr;
 
-    float gameTime;
-    glm::vec3 pointLightPos;
+    std::unique_ptr<FreeCamera> m_devCamera;
+    std::unique_ptr<AttachedCamera> m_playerCamera;
+    Camera* m_activeCamera = nullptr;
+
+    std::unique_ptr<Skybox> m_skybox;
+    GameManager m_gameManager;
+
+    float m_gameTime = 0.0f;
+    std::unique_ptr<InputManager> m_inputManager;
 
 public:
-    Scene(int width, int height);
+    Scene(int width, int height, GLFWwindow* window);
     ~Scene();
 
     void Init();
-    void ProcessInput(GLFWwindow* window, float deltaTime);
-    void ProcessMouseMovement(double xpos, double ypos, bool enableRotation);
-    void Update(float deltaTime);
-    void Draw(Shader& shader, int scrWidth, int scrHeight);
 
-    GameManager& GetGameManager() { return gameManager; }
+    void Update(float deltaTime);
+    void Draw(int scrWidth, int scrHeight); 
+
+    void ProcessInput(GLFWwindow* window, float deltaTime);
+    //void ProcessMouseMovement(double xpos, double ypos);
+    void ProcessMouseMovement(GLFWwindow* window, double xpos, double ypos);
 
 private:
-    bool updateCursorState(GLFWwindow* window);
-    void handleMovementInput(GLFWwindow* window, float deltaTime);
+    void CreateLevel();
 };
 
 #endif // !SCENE_H

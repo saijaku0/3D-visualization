@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-InputManager::InputManager() {
+InputManager::InputManager(GLFWwindow* window) : m_window(window) {
     BindKey(GLFW_KEY_W, GameAction::MoveForward);
     BindKey(GLFW_KEY_S, GameAction::MoveBackward);
     BindKey(GLFW_KEY_A, GameAction::MoveLeft);
@@ -13,14 +13,16 @@ void InputManager::BindKey(int glfwKey, GameAction action) {
     keyBindings[glfwKey] = action;
 }
 
-bool InputManager::IsActionActive(GLFWwindow* window, GameAction action) const {
-
-    for (const auto& [key, bindingAction] : keyBindings) {
-        if (bindingAction == action) {
-            if (glfwGetKey(window, key) == GLFW_PRESS) {
-                return true; 
-            }
+bool InputManager::GetButton(GameAction action) const {
+    for (auto const& [key, act] : keyBindings) {
+        if (act == action) {
+            if (glfwGetKey(m_window, key) == GLFW_PRESS)
+                return true;
         }
     }
     return false;
+}
+
+bool InputManager::GetButtonDown(GameAction action) const {
+    return GetButton(action);
 }

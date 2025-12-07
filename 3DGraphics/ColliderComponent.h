@@ -19,6 +19,6 @@ public:
     ColliderComponent(GameObject* owner) : Component(owner) {}
     virtual ~ColliderComponent() = default;
 
-    virtual ColliderType GetColliderType() const {}
+    virtual ColliderType GetColliderType() const = 0;
 };
 

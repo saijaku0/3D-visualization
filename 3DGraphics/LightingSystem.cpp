@@ -1,6 +1,6 @@
 #include "LightingSystem.h"
 
-void LightingSystem::AddPointLight(const glm::vec3& pos, const glm::vec3& color = glm::vec3(1.0f)) {
+void LightingSystem::AddPointLight(const glm::vec3& pos, const glm::vec3& color) {
 	PointLight light;
 
 	light.position = pos;

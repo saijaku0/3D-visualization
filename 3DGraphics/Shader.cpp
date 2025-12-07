@@ -63,6 +63,15 @@ int Shader::getUniformLocation(const std::string& name) const {
 		return uniformCache[name];
 
 	int location = glGetUniformLocation(ID, name.c_str());
+
+	if (location == -1) {
+		std::cerr << "!!! UNIFORM ERROR !!!: Uniform '" << name << "' was NOT found (Location: -1)!" << std::endl;
+	}
+	else {
+		// Успешный вывод, чтобы знать, какой uniform куда попал
+		std::cout << "Uniform OK: '" << name << "' found at Location: " << location << std::endl;
+	}
+
 	if (location == -1) {
 		std::cerr << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
 	}

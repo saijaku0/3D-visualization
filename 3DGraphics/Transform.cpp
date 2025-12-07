@@ -1,15 +1,13 @@
 #include "Transform.h"
 
 glm::mat4 Transform::GetModelMatrix() const {
-    if (m_isDirt) 
+    if (!m_isDirt)
         return m_cachedModelMatrix;
 
     glm::mat4 model = glm::mat4(1.0f);
 
     model = glm::translate(model, m_position);
-
     model *= glm::mat4_cast(m_rotation);
-
     model = glm::scale(model, m_scale);
 
     m_isDirt = false;

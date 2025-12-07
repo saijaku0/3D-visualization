@@ -21,7 +21,8 @@ public:
     template<typename T>
     std::vector<T*> GetComponents() const;
 
-    Transform* GetTransformPtr() const;
+    const Transform* GetTransformPtr() const;
+    Transform* GetTransformPtr();
     void AddComponent(std::unique_ptr<Component> component);
     
 };

@@ -1,11 +1,11 @@
 #version 330 core
-#define NR_POINT_LIGHTS 4
+#define NR_POINT_LIGHTS 8
 
 out vec4 FragColor;
 
 in vec3 Normal;
 in vec3 FragPos;
-in vec2 TexCoords;
+//in vec2 TexCoords;
 
 struct Direction {
 	vec3 direction;
@@ -43,7 +43,7 @@ struct SpotLight {
 
 uniform vec3 viewPos;
 uniform vec3 objectColor;
-uniform sampler2D ourTexture;
+//uniform sampler2D ourTexture;
 
 uniform Direction dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
@@ -61,7 +61,7 @@ void main()
 	for(int i = 0; i < NR_POINT_LIGHTS; i++)
 		result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
 
-	FragColor = texture(ourTexture, TexCoords) * vec4(result * objectColor, 1.0);
+	FragColor = vec4(result * objectColor, 1.0);
 }
 
 vec3 CalcDirLight(Direction light, vec3 normal, vec3 viewDir) {
@@ -94,5 +94,3 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
 	vec3 specular = light.specular * spec * attenuation;
 	return (ambient + diffuse + specular);
 }
-
-

@@ -3,118 +3,99 @@
 
 #include "Mesh.h"
 #include <vector>
+#include <memory> 
+#include <glm/glm.hpp>
 
 class GeometryGenerator {
-public: 
-    static Mesh* CreateCube() {
-        std::vector<float> vertices = {
-           -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-           -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-           -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+public:
+    static std::shared_ptr<Mesh> CreateCube() {
+        std::vector<Vertex> vertices = {
+            // Задняя грань
+            { {-0.5f, -0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {0.0f, 0.0f} },
+            { { 0.5f,  0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {1.0f, 1.0f} },
+            { { 0.5f, -0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {1.0f, 0.0f} },
+            { { 0.5f,  0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {1.0f, 1.0f} },
+            { {-0.5f, -0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {0.0f, 0.0f} },
+            { {-0.5f,  0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {0.0f, 1.0f} },
 
-           -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-           -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-           -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+            // Передняя грань
+            { {-0.5f, -0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {0.0f, 0.0f} },
+            { { 0.5f, -0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {1.0f, 0.0f} },
+            { { 0.5f,  0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {1.0f, 1.0f} },
+            { { 0.5f,  0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {1.0f, 1.0f} },
+            { {-0.5f,  0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {0.0f, 1.0f} },
+            { {-0.5f, -0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {0.0f, 0.0f} },
 
-           -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-           -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+            // Левая грань
+            { {-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f, 0.0f} },
+            { {-0.5f,  0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f, 1.0f} },
+            { {-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f, 1.0f} },
+            { {-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f, 1.0f} },
+            { {-0.5f, -0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f, 0.0f} },
+            { {-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f, 0.0f} },
 
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+            // Правая грань
+            { { 0.5f,  0.5f,  0.5f},  {1.0f,  0.0f,  0.0f},  {1.0f, 0.0f} },
+            { { 0.5f, -0.5f, -0.5f},  {1.0f,  0.0f,  0.0f},  {0.0f, 1.0f} },
+            { { 0.5f,  0.5f, -0.5f},  {1.0f,  0.0f,  0.0f},  {1.0f, 1.0f} },
+            { { 0.5f, -0.5f, -0.5f},  {1.0f,  0.0f,  0.0f},  {0.0f, 1.0f} },
+            { { 0.5f,  0.5f,  0.5f},  {1.0f,  0.0f,  0.0f},  {1.0f, 0.0f} },
+            { { 0.5f, -0.5f,  0.5f},  {1.0f,  0.0f,  0.0f},  {0.0f, 0.0f} },
 
-           -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-           -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-           -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+            // Нижняя грань
+            { {-0.5f, -0.5f, -0.5f},  {0.0f, -1.0f,  0.0f},  {0.0f, 1.0f} },
+            { { 0.5f, -0.5f, -0.5f},  {0.0f, -1.0f,  0.0f},  {1.0f, 1.0f} },
+            { { 0.5f, -0.5f,  0.5f},  {0.0f, -1.0f,  0.0f},  {1.0f, 0.0f} },
+            { { 0.5f, -0.5f,  0.5f},  {0.0f, -1.0f,  0.0f},  {1.0f, 0.0f} },
+            { {-0.5f, -0.5f,  0.5f},  {0.0f, -1.0f,  0.0f},  {0.0f, 0.0f} },
+            { {-0.5f, -0.5f, -0.5f},  {0.0f, -1.0f,  0.0f},  {0.0f, 1.0f} },
 
-           -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-           -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-           -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+            // Верхняя грань
+            { {-0.5f,  0.5f, -0.5f},  {0.0f,  1.0f,  0.0f},  {0.0f, 1.0f} },
+            { {-0.5f,  0.5f,  0.5f},  {0.0f,  1.0f,  0.0f},  {0.0f, 0.0f} },
+            { { 0.5f,  0.5f,  0.5f},  {0.0f,  1.0f,  0.0f},  {1.0f, 0.0f} },
+            { { 0.5f,  0.5f,  0.5f},  {0.0f,  1.0f,  0.0f},  {1.0f, 0.0f} },
+            { { 0.5f,  0.5f, -0.5f},  {0.0f,  1.0f,  0.0f},  {1.0f, 1.0f} },
+            { {-0.5f,  0.5f, -0.5f},  {0.0f,  1.0f,  0.0f},  {0.0f, 1.0f} }
         };
-        return new Mesh(vertices);
+
+        std::vector<unsigned int> indices;
+        for (unsigned int i = 0; i < vertices.size(); i++) indices.push_back(i);
+
+        std::vector<Texture> textures;
+
+        return std::make_shared<Mesh>(std::move(vertices), std::move(indices), std::move(textures));
     }
 
-    static Mesh* CreatePyramid() {
-        std::vector<float> vertices = {
-            0.0f,  0.5f,  0.0f,     0.0f, 0.5f,  0.8f, 
-           -0.5f, -0.5f,  0.5f,     0.0f, 0.5f,  0.8f, 
-            0.5f, -0.5f,  0.5f,     0.0f, 0.5f,  0.8f, 
+    static std::shared_ptr<Mesh> CreatePyramid() {
+        std::vector<Vertex> vertices = {
+            { {0.0f,  0.5f,  0.0f},  {0.0f, 0.5f,  0.8f}, {0.5f, 1.0f} },
+            { {-0.5f, -0.5f,  0.5f},  {0.0f, 0.5f,  0.8f}, {0.0f, 0.0f} },
+            { { 0.5f, -0.5f,  0.5f},  {0.0f, 0.5f,  0.8f}, {1.0f, 0.0f} },
 
-            0.0f,  0.5f,  0.0f,     0.8f, 0.5f, -0.5f, 
-            0.5f, -0.5f,  0.5f,     0.8f, 0.5f, -0.5f, 
-            0.0f, -0.5f, -0.5f,     0.8f, 0.5f, -0.5f, 
+            { { 0.0f,  0.5f,  0.0f},  {0.8f, 0.5f, -0.5f}, {0.5f, 1.0f} },
+            { { 0.5f, -0.5f,  0.5f},  {0.8f, 0.5f, -0.5f}, {0.0f, 0.0f} },
+            { { 0.0f, -0.5f, -0.5f},  {0.8f, 0.5f, -0.5f}, {1.0f, 0.0f} },
 
-            0.0f,  0.5f,  0.0f,    -0.8f, 0.5f, -0.5f, 
-            0.0f, -0.5f, -0.5f,    -0.8f, 0.5f, -0.5f, 
-           -0.5f, -0.5f,  0.5f,    -0.8f, 0.5f, -0.5f, 
+            { { 0.0f,  0.5f,  0.0f},  {-0.8f, 0.5f, -0.5f}, {0.5f, 1.0f} },
+            { { 0.0f, -0.5f, -0.5f},  {-0.8f, 0.5f, -0.5f}, {0.0f, 0.0f} },
+            { {-0.5f, -0.5f,  0.5f},  {-0.8f, 0.5f, -0.5f}, {1.0f, 0.0f} },
 
-           -0.5f, -0.5f,  0.5f,     0.0f, -1.0f, 0.0f,
-            0.0f, -0.5f, -0.5f,     0.0f, -1.0f, 0.0f,
-            0.5f, -0.5f,  0.5f,     0.0f, -1.0f, 0.0f
+            { {-0.5f, -0.5f,  0.5f},  {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
+            { { 0.0f, -0.5f, -0.5f},  {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f} },
+            { { 0.5f, -0.5f,  0.5f},  {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f} },
+
+            { {-0.5f, -0.5f,  0.5f},  {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f} }, 
+            { {-0.5f, -0.5f, -0.5f},  {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} }, 
+            { { 0.0f, -0.5f, -0.5f},  {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f} }
         };
-        return new Mesh(vertices);
-    }
 
-    static Mesh* CreateSphere(float radius = 1.0f, int sectorCount = 36, int stackCount = 18) {
-        std::vector<float> vertices;
+        std::vector<unsigned int> indices;
+        for (unsigned int i = 0; i < vertices.size(); i++) indices.push_back(i);
 
-        float x, y, z, xy;
-        float nx, ny, nz;
-        float s, t;
+        std::vector<Texture> textures;
 
-        float sectorStep = 2 * 3.14159f / sectorCount;
-        float stackStep = 3.14159f / stackCount;
-        float sectorAngle, stackAngle;
-
-        for (int i = 0; i <= stackCount; ++i) {
-            stackAngle = 3.14159f / 2 - i * stackStep;
-            xy = radius * cosf(stackAngle);
-            z = radius * sinf(stackAngle);
-
-            for (int j = 0; j <= sectorCount; ++j) {
-                sectorAngle = j * sectorStep;
-
-                x = xy * cosf(sectorAngle);
-                y = xy * sinf(sectorAngle);
-
-                nx = x / radius;
-                ny = y / radius;
-                nz = z / radius;
-
-                s = (float)j / sectorCount;
-                t = (float)i / stackCount;
-
-                vertices.push_back(x);
-                vertices.push_back(y);
-                vertices.push_back(z);
-                vertices.push_back(nx);
-                vertices.push_back(ny);
-                vertices.push_back(nz);
-                vertices.push_back(s);
-                vertices.push_back(t);
-            }
-        }
-
-        return new Mesh(vertices);
+        return std::make_shared<Mesh>(std::move(vertices), std::move(indices), std::move(textures));
     }
 };
 
