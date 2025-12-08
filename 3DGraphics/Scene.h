@@ -48,7 +48,6 @@ public:
     void Draw(int scrWidth, int scrHeight); 
 
     void ProcessInput(GLFWwindow* window, float deltaTime);
-    //void ProcessMouseMovement(double xpos, double ypos);
     void ProcessMouseMovement(GLFWwindow* window, double xpos, double ypos);
 
 private:

@@ -2,7 +2,6 @@
 #include "ResourceManager.h"
 #include "GeometryGenerator.h"
 
-// Компоненты
 #include "MeshRendererComponent.h"
 #include "RigidbodyComponent.h"
 #include "BoxColliderComponent.h"
@@ -35,7 +34,6 @@ void Scene::Init() {
     m_lightingSystem.dirLight.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
     m_lightingSystem.dirLight.specular = glm::vec3(0.5f);
 
-    // --- ИНИЦИАЛИЗАЦИЯ ТОЧЕЧНОГО СВЕТА ---
     m_lightingSystem.AddPointLight(glm::vec3(0, 3, 0), glm::vec3(1.0f, 0.8f, 0.6f));
 
     m_devCamera = std::make_unique<FreeCamera>(glm::vec3(0.0f, 5.0f, 10.0f));
@@ -56,27 +54,24 @@ void Scene::Init() {
 }
 
 void Scene::CreateLevel() {
-    // --- ИГРОК ---
+    // --- PLAYER ---
     auto playerObj = std::make_unique<GameObject>();
     playerObj->GetTransformPtr()->SetPosition(glm::vec3(1.0f, 2.0f, 1.0f));
 
     glm::vec3 playerScale = glm::vec3(1.0f, 2.0f, 1.0f);
     playerObj->GetTransformPtr()->SetScale(playerScale);
 
-    // Визуал
     auto playerRender = std::make_unique<MeshRendererComponent>(playerObj.get());
     playerRender->mesh = ResourceManager::GetMesh("cube");
     playerRender->color = glm::vec3(1.0f, 0.0f, 0.0f);
     playerObj->AddComponent(std::move(playerRender));
 
-    // Физика
     auto playerRb = std::make_unique<RigidbodyComponent>(playerObj.get());
     playerRb->mass = 80.0f;
     playerRb->isStatic = false;
     m_physicsWorld.AddBody(playerRb.get());
     playerObj->AddComponent(std::move(playerRb));
 
-    // Форма
     auto playerCol = std::make_unique<BoxColliderComponent>(playerObj.get());
     playerCol->size = playerScale * 0.5f;
     playerObj->AddComponent(std::move(playerCol));
@@ -91,7 +86,7 @@ void Scene::CreateLevel() {
     m_gameObjects.push_back(std::move(playerObj));
 
     // ----------------------
-    // 2. ПОЛ (Ground)
+    // (Ground)
     // ----------------------
     auto floorObj = std::make_unique<GameObject>();
     floorObj->GetTransformPtr()->SetPosition(glm::vec3(0, -0.5f, 0));
@@ -99,19 +94,16 @@ void Scene::CreateLevel() {
     glm::vec3 floorScale = glm::vec3(5.0f, 1.0f, 5.0f);
     floorObj->GetTransformPtr()->SetScale(floorScale);
 
-    // Визуал
     auto floorRender = std::make_unique<MeshRendererComponent>(floorObj.get());
     floorRender->mesh = ResourceManager::GetMesh("cube");
     floorRender->color = glm::vec3(0.7f, 0.7f, 0.7f);
     floorObj->AddComponent(std::move(floorRender));
 
-    // Физика
     auto floorRb = std::make_unique<RigidbodyComponent>(floorObj.get());
     floorRb->isStatic = true; 
     m_physicsWorld.AddBody(floorRb.get());
     floorObj->AddComponent(std::move(floorRb));
 
-    // Коллайдер
     auto floorCol = std::make_unique<BoxColliderComponent>(floorObj.get());
     floorCol->size = floorScale * 0.5f;
     floorObj->AddComponent(std::move(floorCol));
