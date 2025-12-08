@@ -26,24 +26,22 @@ void PhysicsWorld::Step(float dt) {
         if (body->isStatic) continue;
 
         if (body->useGravity) {
-            body->AddForce(m_gravity * dt); // F = ma (упрощенно v += g*dt)
+            glm::vec3 gravityForce = m_gravity * body->mass * dt;
+            body->AddForce(gravityForce);
         }
 
         // Интеграция позиции: x += v * dt
         Transform* transform = body->GetOwner()->GetTransformPtr();
         transform->Translate(body->velocity * dt);
 
-        // Линейное сопротивление (Drag)
         body->velocity *= (1.0f - body->drag * dt);
     }
 
-    // 2. Проверка коллизий (Все со всеми)
     for (size_t i = 0; i < m_bodies.size(); ++i) {
         for (size_t j = i + 1; j < m_bodies.size(); ++j) {
             RigidbodyComponent* rbA = m_bodies[i];
             RigidbodyComponent* rbB = m_bodies[j];
 
-            // Два статических объекта не взаимодействуют
             if (rbA->isStatic && rbB->isStatic) continue;
 
             ResolveCollision(rbA, rbB);
@@ -97,7 +95,7 @@ void PhysicsWorld::ApplyCollisionResponse(RigidbodyComponent* rbA, RigidbodyComp
     Transform* tA = rbA->GetOwner()->GetTransformPtr();
     Transform* tB = rbB->GetOwner()->GetTransformPtr();
 
-    const float percent = 0.8f;
+    const float percent = 1.0f;
     const float slop = 0.01f;
     glm::vec3 correction = res.normal * percent * std::max(res.depth - slop, 0.0f);
 
