@@ -6,6 +6,10 @@ Currently, the project showcases a simple rotating triangle. This is just the ve
 
 To streamline the development process and make it easy to build and run, I've implemented a package.json file. This allows for convenient project management using npm commands.
 
+**FINAL**
+
+https://github.com/user-attachments/assets/6ca1f27a-7bf4-41ac-bf70-0c0df55a35b2
+
 **Current Progress: The First Step**
 
 Below is a GIF demonstrating the current state of the project – a simple rotating triangle. This represents the initial stage of my journey.
@@ -18,7 +22,5 @@ For me, it was a huge learning experience despite the monster I ended up creatin
 
 P.S. I tried to use AI as little as possible when writing the code, because otherwise it wouldn’t have been my experience or my achievement.
 
-**FINAL**
 
-https://github.com/user-attachments/assets/19b16309-e95c-404a-acec-d3b99253f904
 
