@@ -2,101 +2,17 @@
 #define GEOMETRY_GENERATOR_H
 
 #include "Mesh.h"
-#include <vector>
+
 #include <memory> 
 #include <glm/glm.hpp>
 
 class GeometryGenerator {
 public:
-    static std::shared_ptr<Mesh> CreateCube() {
-        std::vector<Vertex> vertices = {
-            // Задняя грань
-            { {-0.5f, -0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {0.0f, 0.0f} },
-            { { 0.5f,  0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {1.0f, 1.0f} },
-            { { 0.5f, -0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {1.0f, 0.0f} },
-            { { 0.5f,  0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {1.0f, 1.0f} },
-            { {-0.5f, -0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {0.0f, 0.0f} },
-            { {-0.5f,  0.5f, -0.5f},  {0.0f,  0.0f, -1.0f},  {0.0f, 1.0f} },
+    static std::shared_ptr<Mesh> CreateCube();
 
-            // Передняя грань
-            { {-0.5f, -0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {0.0f, 0.0f} },
-            { { 0.5f, -0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {1.0f, 0.0f} },
-            { { 0.5f,  0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {1.0f, 1.0f} },
-            { { 0.5f,  0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {1.0f, 1.0f} },
-            { {-0.5f,  0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {0.0f, 1.0f} },
-            { {-0.5f, -0.5f,  0.5f},  {0.0f,  0.0f,  1.0f},  {0.0f, 0.0f} },
+    static std::shared_ptr<Mesh> CreatePyramid();
 
-            // Левая грань
-            { {-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f, 0.0f} },
-            { {-0.5f,  0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f, 1.0f} },
-            { {-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f, 1.0f} },
-            { {-0.5f, -0.5f, -0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f, 1.0f} },
-            { {-0.5f, -0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {0.0f, 0.0f} },
-            { {-0.5f,  0.5f,  0.5f}, {-1.0f,  0.0f,  0.0f},  {1.0f, 0.0f} },
-
-            // Правая грань
-            { { 0.5f,  0.5f,  0.5f},  {1.0f,  0.0f,  0.0f},  {1.0f, 0.0f} },
-            { { 0.5f, -0.5f, -0.5f},  {1.0f,  0.0f,  0.0f},  {0.0f, 1.0f} },
-            { { 0.5f,  0.5f, -0.5f},  {1.0f,  0.0f,  0.0f},  {1.0f, 1.0f} },
-            { { 0.5f, -0.5f, -0.5f},  {1.0f,  0.0f,  0.0f},  {0.0f, 1.0f} },
-            { { 0.5f,  0.5f,  0.5f},  {1.0f,  0.0f,  0.0f},  {1.0f, 0.0f} },
-            { { 0.5f, -0.5f,  0.5f},  {1.0f,  0.0f,  0.0f},  {0.0f, 0.0f} },
-
-            // Нижняя грань
-            { {-0.5f, -0.5f, -0.5f},  {0.0f, -1.0f,  0.0f},  {0.0f, 1.0f} },
-            { { 0.5f, -0.5f, -0.5f},  {0.0f, -1.0f,  0.0f},  {1.0f, 1.0f} },
-            { { 0.5f, -0.5f,  0.5f},  {0.0f, -1.0f,  0.0f},  {1.0f, 0.0f} },
-            { { 0.5f, -0.5f,  0.5f},  {0.0f, -1.0f,  0.0f},  {1.0f, 0.0f} },
-            { {-0.5f, -0.5f,  0.5f},  {0.0f, -1.0f,  0.0f},  {0.0f, 0.0f} },
-            { {-0.5f, -0.5f, -0.5f},  {0.0f, -1.0f,  0.0f},  {0.0f, 1.0f} },
-
-            // Верхняя грань
-            { {-0.5f,  0.5f, -0.5f},  {0.0f,  1.0f,  0.0f},  {0.0f, 1.0f} },
-            { {-0.5f,  0.5f,  0.5f},  {0.0f,  1.0f,  0.0f},  {0.0f, 0.0f} },
-            { { 0.5f,  0.5f,  0.5f},  {0.0f,  1.0f,  0.0f},  {1.0f, 0.0f} },
-            { { 0.5f,  0.5f,  0.5f},  {0.0f,  1.0f,  0.0f},  {1.0f, 0.0f} },
-            { { 0.5f,  0.5f, -0.5f},  {0.0f,  1.0f,  0.0f},  {1.0f, 1.0f} },
-            { {-0.5f,  0.5f, -0.5f},  {0.0f,  1.0f,  0.0f},  {0.0f, 1.0f} }
-        };
-
-        std::vector<unsigned int> indices;
-        for (unsigned int i = 0; i < vertices.size(); i++) indices.push_back(i);
-
-        std::vector<Texture> textures;
-
-        return std::make_shared<Mesh>(std::move(vertices), std::move(indices), std::move(textures));
-    }
-
-    static std::shared_ptr<Mesh> CreatePyramid() {
-        std::vector<Vertex> vertices = {
-            { {0.0f,  0.5f,  0.0f},  {0.0f, 0.5f,  0.8f}, {0.5f, 1.0f} },
-            { {-0.5f, -0.5f,  0.5f},  {0.0f, 0.5f,  0.8f}, {0.0f, 0.0f} },
-            { { 0.5f, -0.5f,  0.5f},  {0.0f, 0.5f,  0.8f}, {1.0f, 0.0f} },
-
-            { { 0.0f,  0.5f,  0.0f},  {0.8f, 0.5f, -0.5f}, {0.5f, 1.0f} },
-            { { 0.5f, -0.5f,  0.5f},  {0.8f, 0.5f, -0.5f}, {0.0f, 0.0f} },
-            { { 0.0f, -0.5f, -0.5f},  {0.8f, 0.5f, -0.5f}, {1.0f, 0.0f} },
-
-            { { 0.0f,  0.5f,  0.0f},  {-0.8f, 0.5f, -0.5f}, {0.5f, 1.0f} },
-            { { 0.0f, -0.5f, -0.5f},  {-0.8f, 0.5f, -0.5f}, {0.0f, 0.0f} },
-            { {-0.5f, -0.5f,  0.5f},  {-0.8f, 0.5f, -0.5f}, {1.0f, 0.0f} },
-
-            { {-0.5f, -0.5f,  0.5f},  {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
-            { { 0.0f, -0.5f, -0.5f},  {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f} },
-            { { 0.5f, -0.5f,  0.5f},  {0.0f, -1.0f, 0.0f}, {1.0f, 1.0f} },
-
-            { {-0.5f, -0.5f,  0.5f},  {0.0f, -1.0f, 0.0f}, {0.0f, 1.0f} }, 
-            { {-0.5f, -0.5f, -0.5f},  {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f} }, 
-            { { 0.0f, -0.5f, -0.5f},  {0.0f, -1.0f, 0.0f}, {1.0f, 0.0f} }
-        };
-
-        std::vector<unsigned int> indices;
-        for (unsigned int i = 0; i < vertices.size(); i++) indices.push_back(i);
-
-        std::vector<Texture> textures;
-
-        return std::make_shared<Mesh>(std::move(vertices), std::move(indices), std::move(textures));
-    }
+    static std::shared_ptr<Mesh> CreateSphere(float radius = 0.5f, int sectors = 36, int stacks = 18);
 };
 
 #endif // GEOMETRY_GENERATOR_H
