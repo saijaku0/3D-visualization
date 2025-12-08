@@ -10,7 +10,7 @@ class PlayerControllerComponent : public Component {
     Camera* m_camera;
 
     float m_speed = 5.0f;
-    float m_jumpForce = 5.0f;
+    float m_jumpForce = 400.0f;
 public:
     PlayerControllerComponent(GameObject* owner, InputManager* input, Camera* cam)
         : Component(owner), m_input(input), m_camera(cam) {

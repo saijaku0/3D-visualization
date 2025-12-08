@@ -14,7 +14,6 @@ void PlayerControllerComponent::Update(float dt) {
 
     glm::vec3 moveDir = glm::vec3(0.0f);
 
-    // 3. Обработка ввода
     if (m_input->GetButton(GameAction::MoveForward))  moveDir += forward;
     if (m_input->GetButton(GameAction::MoveBackward)) moveDir -= forward;
     if (m_input->GetButton(GameAction::MoveRight))    moveDir += right;
@@ -34,7 +33,7 @@ void PlayerControllerComponent::Update(float dt) {
     }
 
     if (m_input->GetButton(GameAction::Jump) && rb->onGround) {
-        rb->velocity.y = m_jumpForce;
+        rb->AddImpulse(glm::vec3(0, m_jumpForce, 0));
         rb->onGround = false;
     }
 }
