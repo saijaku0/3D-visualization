@@ -11,7 +11,6 @@ class PlayerControllerComponent : public Component {
 
     float m_speed = 5.0f;
     float m_jumpForce = 5.0f;
-
 public:
     PlayerControllerComponent(GameObject* owner, InputManager* input, Camera* cam)
         : Component(owner), m_input(input), m_camera(cam) {
