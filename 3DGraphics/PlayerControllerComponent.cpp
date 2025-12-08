@@ -20,15 +20,17 @@ void PlayerControllerComponent::Update(float dt) {
     if (m_input->GetButton(GameAction::MoveRight))    moveDir += right;
     if (m_input->GetButton(GameAction::MoveLeft))     moveDir -= right;
 
-    if (glm::length(moveDir) > 0.1f) {
-        moveDir = glm::normalize(moveDir);
+    if (rb->onGround) {
+        if (glm::length(moveDir) > 0.1f) {
+            moveDir = glm::normalize(moveDir);
 
-        rb->velocity.x = moveDir.x * m_speed;
-        rb->velocity.z = moveDir.z * m_speed;
-    }
-    else {
-        rb->velocity.x = 0.0f;
-        rb->velocity.z = 0.0f;
+            rb->velocity.x = moveDir.x * m_speed;
+            rb->velocity.z = moveDir.z * m_speed;
+        }
+        else {
+            rb->velocity.x = 0.0f;
+            rb->velocity.z = 0.0f;
+        }
     }
 
     if (m_input->GetButton(GameAction::Jump) && rb->onGround) {
