@@ -73,7 +73,7 @@ void Scene::CreateLevel() {
     playerObj->AddComponent(std::move(playerRb));
 
     auto playerCol = std::make_unique<BoxColliderComponent>(playerObj.get());
-    playerCol->size = playerScale * 0.5f;
+    playerCol->SetSize(playerScale);
     playerObj->AddComponent(std::move(playerCol));
 
     auto playerCtrl = std::make_unique<PlayerControllerComponent>(
@@ -91,7 +91,7 @@ void Scene::CreateLevel() {
     auto floorObj = std::make_unique<GameObject>();
     floorObj->GetTransformPtr()->SetPosition(glm::vec3(0, -0.5f, 0));
 
-    glm::vec3 floorScale = glm::vec3(5.0f, 1.0f, 5.0f);
+    glm::vec3 floorScale = glm::vec3(15.0f, 1.0f, 15.0f);
     floorObj->GetTransformPtr()->SetScale(floorScale);
 
     auto floorRender = std::make_unique<MeshRendererComponent>(floorObj.get());
@@ -105,7 +105,7 @@ void Scene::CreateLevel() {
     floorObj->AddComponent(std::move(floorRb));
 
     auto floorCol = std::make_unique<BoxColliderComponent>(floorObj.get());
-    floorCol->size = floorScale * 0.5f;
+    floorCol->SetSize(floorScale);
     floorObj->AddComponent(std::move(floorCol));
     m_gameObjects.push_back(std::move(floorObj));
 }

@@ -47,7 +47,7 @@ CollisionResult Collision::SphereVsBox(
     float radius = sphere.GetWorldRadius();
 
     glm::vec3 boxCenter = tBox->GetPosition() + box.centerOffset;
-    glm::vec3 boxHalfSize = box.size;
+    glm::vec3 boxHalfSize = box.GetSize();
 
     glm::vec3 minAABB = boxCenter - boxHalfSize;
     glm::vec3 maxAABB = boxCenter + boxHalfSize;
@@ -88,8 +88,8 @@ CollisionResult Collision::BoxVsBox(
     glm::vec3 p1 = t1->GetPosition() + b1.centerOffset;
     glm::vec3 p2 = t2->GetPosition() + b2.centerOffset;
     
-    glm::vec3 half1 = b1.size;
-    glm::vec3 half2 = b2.size;
+    glm::vec3 half1 = b1.GetSize();
+    glm::vec3 half2 = b2.GetSize();
 
     glm::vec3 delta = p2 - p1;
 

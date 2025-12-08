@@ -38,7 +38,7 @@ void DebugRenderer::RenderColliders(
             model = glm::translate(model, tr->GetPosition() + box->centerOffset);
             model *= glm::mat4_cast(tr->GetRotation());
 
-            glm::vec3 debugScale = box->size * 2.0f;
+            glm::vec3 debugScale = box->GetSize() * 2.0f;
 
             model = glm::scale(model, debugScale);
 

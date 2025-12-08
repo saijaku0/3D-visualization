@@ -1,11 +1,11 @@
 #include "BoxColliderComponent.h"
 
 void BoxColliderComponent::SetSize(const glm::vec3& fullSize) {
-    halfExtents = fullSize * 0.5f;
+    size = fullSize * 0.5f;
 }
 
 glm::vec3 BoxColliderComponent::GetSize() const {
-    return halfExtents * 2.0f;
+    return size;
 }
 
 glm::vec3 BoxColliderComponent::GetWorldSize() const {

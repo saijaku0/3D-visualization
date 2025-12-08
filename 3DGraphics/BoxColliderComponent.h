@@ -5,8 +5,8 @@
 class BoxColliderComponent :
     public ColliderComponent {
     glm::vec3 halfExtents;
-public:
     glm::vec3 size = glm::vec3(1.0f);
+public:
 
     BoxColliderComponent(GameObject* owner) : ColliderComponent(owner), halfExtents(0.5f) {}
     virtual ~BoxColliderComponent() = default;

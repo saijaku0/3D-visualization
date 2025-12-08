@@ -23,7 +23,7 @@ Player::Player(InputManager* input, Camera* camera) : GameObject() {
     AddComponent(std::move(rb));
 
     auto collider = std::make_unique<BoxColliderComponent>(this);
-    collider->size = glm::vec3(0.5f, 1.8f, 0.5f);
+    collider->GetSize() = glm::vec3(0.5f, 1.8f, 0.5f);
     AddComponent(std::move(collider));
 
     auto controller = std::make_unique<PlayerControllerComponent>(this, input, camera);

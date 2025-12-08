@@ -101,7 +101,7 @@ std::unique_ptr<GameObject> SceneFactory::CreateBox(
     obj->AddComponent(std::move(rb));
 
     auto col = std::make_unique<BoxColliderComponent>(obj.get());
-    col->size = scale;
+    col->GetSize() = scale;
     obj->AddComponent(std::move(col));
 
     return obj;
