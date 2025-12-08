@@ -22,17 +22,7 @@ void GameManager::ToggleGameMode() {
 bool GameManager::IsMouseRotationActive(GLFWwindow* window) {
     if (isGameMode) return true;
 
-    bool rightClick = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
-
-    if (rightClick) {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        return true;
-    }
-    else {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        firstMouse = true;
-        return false;
-    }
+    return glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
 }
 
 void GameManager::ProcessModeSwitch(GLFWwindow* window, FreeCamera* devCam, AttachedCamera* playerCam, GameObject* playerObj, Camera*& activeCamera) {
