@@ -46,6 +46,21 @@ void DebugRenderer::RenderColliders(
             cubeMesh->Draw(*m_shader);
         }
 
+        auto sphere = obj->GetComponent<SphereColliderComponent>();
+        if (sphere) {
+            Transform* tr = obj->GetTransformPtr();
+            glm::mat4 model = glm::mat4(1.0f);
+
+            model = glm::translate(model, tr->GetPosition() + sphere->centerOffset);
+
+            model *= glm::mat4_cast(tr->GetRotation());
+
+            float debugScale = sphere->radius * 2.0f;
+            model = glm::scale(model, glm::vec3(debugScale));
+
+            m_shader->setMat4("model", model);
+            ResourceManager::GetMesh("sphere")->Draw(*m_shader);
+        }
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, polygonMode[0]);
