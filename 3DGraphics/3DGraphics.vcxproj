@@ -149,6 +149,7 @@
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightingSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />

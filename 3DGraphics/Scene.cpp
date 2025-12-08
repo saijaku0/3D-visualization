@@ -6,6 +6,7 @@
 #include "RigidbodyComponent.h"
 #include "BoxColliderComponent.h"
 #include "PlayerControllerComponent.h"
+#include "SphereColliderComponent.h"
 #include "DebugRenderer.h"
 
 Scene::Scene(int width, int height, GLFWwindow* window)
@@ -25,6 +26,7 @@ void Scene::Init() {
     ResourceManager::LoadShader("shader.vert", "shader.frag", "default");
     ResourceManager::LoadShader("skybox.vert", "skybox.frag", "skybox");
     ResourceManager::StoreMesh("cube", GeometryGenerator::CreateCube());
+    ResourceManager::StoreMesh("sphere", GeometryGenerator::CreateSphere());
 
     auto debugShader = ResourceManager::GetShader("default");
     DebugRenderer::Init(debugShader);
@@ -57,25 +59,20 @@ void Scene::CreateLevel() {
     // --- PLAYER ---
     auto playerObj = std::make_unique<GameObject>();
     playerObj->GetTransformPtr()->SetPosition(glm::vec3(1.0f, 2.0f, 1.0f));
-
     glm::vec3 playerScale = glm::vec3(1.0f, 2.0f, 1.0f);
     playerObj->GetTransformPtr()->SetScale(playerScale);
-
     auto playerRender = std::make_unique<MeshRendererComponent>(playerObj.get());
     playerRender->mesh = ResourceManager::GetMesh("cube");
     playerRender->color = glm::vec3(1.0f, 0.0f, 0.0f);
     playerObj->AddComponent(std::move(playerRender));
-
     auto playerRb = std::make_unique<RigidbodyComponent>(playerObj.get());
     playerRb->mass = 80.0f;
     playerRb->isStatic = false;
     m_physicsWorld.AddBody(playerRb.get());
     playerObj->AddComponent(std::move(playerRb));
-
     auto playerCol = std::make_unique<BoxColliderComponent>(playerObj.get());
     playerCol->SetSize(playerScale);
     playerObj->AddComponent(std::move(playerCol));
-
     auto playerCtrl = std::make_unique<PlayerControllerComponent>(
         playerObj.get(),
         m_inputManager.get(),
@@ -85,25 +82,42 @@ void Scene::CreateLevel() {
     m_player = playerObj.get();
     m_gameObjects.push_back(std::move(playerObj));
 
+    /*
+    * Ball
+    */
+    auto ballObj = std::make_unique<GameObject>();
+    ballObj->GetTransformPtr()->SetPosition(glm::vec3(3.0f, 5.0f, 0.0f));
+    ballObj->GetTransformPtr()->SetScale(glm::vec3(1.0f));
+    auto ballRender = std::make_unique<MeshRendererComponent>(ballObj.get());
+    ballRender->mesh = ResourceManager::GetMesh("sphere"); 
+    ballRender->color = glm::vec3(0.0f, 0.0f, 1.0f); 
+    ballObj->AddComponent(std::move(ballRender));
+    auto ballCol = std::make_unique<SphereColliderComponent>(ballObj.get());
+    ballCol->radius = 0.5f;
+    ballObj->AddComponent(std::move(ballCol));
+    auto ballRb = std::make_unique<RigidbodyComponent>(ballObj.get());
+    ballRb->mass = 10.0f; 
+    ballRb->restitution = 0.8f;
+    ballRb->drag = 0.5f;  
+    m_physicsWorld.AddBody(ballRb.get());
+    ballObj->AddComponent(std::move(ballRb));
+    m_gameObjects.push_back(std::move(ballObj));
+
     // ----------------------
     // (Ground)
     // ----------------------
     auto floorObj = std::make_unique<GameObject>();
     floorObj->GetTransformPtr()->SetPosition(glm::vec3(0, -0.5f, 0));
-
-    glm::vec3 floorScale = glm::vec3(15.0f, 1.0f, 15.0f);
+    glm::vec3 floorScale = glm::vec3(55.0f, 0.5f, 55.0f);
     floorObj->GetTransformPtr()->SetScale(floorScale);
-
     auto floorRender = std::make_unique<MeshRendererComponent>(floorObj.get());
     floorRender->mesh = ResourceManager::GetMesh("cube");
     floorRender->color = glm::vec3(0.7f, 0.7f, 0.7f);
     floorObj->AddComponent(std::move(floorRender));
-
     auto floorRb = std::make_unique<RigidbodyComponent>(floorObj.get());
     floorRb->isStatic = true; 
     m_physicsWorld.AddBody(floorRb.get());
     floorObj->AddComponent(std::move(floorRb));
-
     auto floorCol = std::make_unique<BoxColliderComponent>(floorObj.get());
     floorCol->SetSize(floorScale);
     floorObj->AddComponent(std::move(floorCol));
@@ -162,7 +176,7 @@ void Scene::Draw(int scrWidth, int scrHeight) {
         scrWidth, scrHeight
     );
 
-    DebugRenderer::RenderColliders(m_gameObjects, m_activeCamera);
+    //DebugRenderer::RenderColliders(m_gameObjects, m_activeCamera);
 
     if (m_skybox) {
         glm::mat4 view = m_activeCamera->GetViewMatrix();
