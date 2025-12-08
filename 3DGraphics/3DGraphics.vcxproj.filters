@@ -153,6 +153,9 @@
     <ClCompile Include="SceneFactory.cpp">
       <Filter>Исходные файлы\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="DebugRenderer.cpp">
+      <Filter>Исходные файлы\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="SceneFactory.h">
       <Filter>Файлы заголовков\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugRenderer.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

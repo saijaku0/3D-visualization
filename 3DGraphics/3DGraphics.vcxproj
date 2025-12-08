@@ -145,6 +145,7 @@
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DebugRenderer.cpp" />
     <ClCompile Include="FreeCamera.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="DebugRenderer.h" />
     <ClInclude Include="FreeCamera.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
