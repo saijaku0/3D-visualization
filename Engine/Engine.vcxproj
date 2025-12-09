@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{9237a81e-2018-4d88-8e79-03a7c9d8cb09}</ProjectGuid>
-    <RootNamespace>My3DGraphics</RootNamespace>
+    <ProjectGuid>{d9e684a7-d7f8-40be-a2b5-5103c14dbc63}</ProjectGuid>
+    <RootNamespace>Engine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -70,9 +70,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Label="Vcpkg">
-    <VcpkgEnableManifest>false</VcpkgEnableManifest>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -107,21 +104,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp23</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>xcopy /y /d "$(ProjectDir)shader.*" "$(OutDir)"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -139,30 +127,55 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="3DGraphics.cpp" />
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerControllerComponent.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneFactory.cpp" />
+    <ClCompile Include="..\3DGraphics\AttachedCamera.cpp" />
+    <ClCompile Include="..\3DGraphics\BoxColliderComponent.cpp" />
+    <ClCompile Include="..\3DGraphics\Camera.cpp" />
+    <ClCompile Include="..\3DGraphics\ColliderComponent.cpp" />
+    <ClCompile Include="..\3DGraphics\Collision.cpp" />
+    <ClCompile Include="..\3DGraphics\Component.cpp" />
+    <ClCompile Include="..\3DGraphics\DebugRenderer.cpp" />
+    <ClCompile Include="..\3DGraphics\FreeCamera.cpp" />
+    <ClCompile Include="..\3DGraphics\GameObject.cpp" />
+    <ClCompile Include="..\3DGraphics\GeometryGenerator.cpp" />
+    <ClCompile Include="..\3DGraphics\LightingSystem.cpp" />
+    <ClCompile Include="..\3DGraphics\Mesh.cpp" />
+    <ClCompile Include="..\3DGraphics\PhysicsWorld.cpp" />
+    <ClCompile Include="..\3DGraphics\Renderer.cpp" />
+    <ClCompile Include="..\3DGraphics\ResourceManager.cpp" />
+    <ClCompile Include="..\3DGraphics\RigidbodyComponent.cpp" />
+    <ClCompile Include="..\3DGraphics\Shader.cpp" />
+    <ClCompile Include="..\3DGraphics\Skybox.cpp" />
+    <ClCompile Include="..\3DGraphics\SphereColliderComponent.cpp" />
+    <ClCompile Include="..\3DGraphics\Transform.cpp" />
+    <ClInclude Include="..\3DGraphics\AttachedCamera.h" />
+    <ClInclude Include="..\3DGraphics\BoxColliderComponent.h" />
+    <ClInclude Include="..\3DGraphics\Camera.h" />
+    <ClInclude Include="..\3DGraphics\ColliderComponent.h" />
+    <ClInclude Include="..\3DGraphics\Collision.h" />
+    <ClInclude Include="..\3DGraphics\Component.h" />
+    <ClInclude Include="..\3DGraphics\DebugRenderer.h" />
+    <ClInclude Include="..\3DGraphics\FreeCamera.h" />
+    <ClInclude Include="..\3DGraphics\GameObject.h" />
+    <ClCompile Include="..\3DGraphics\MeshRendererComponent.h" />
+    <ClInclude Include="..\3DGraphics\GeometryGenerator.h" />
+    <ClInclude Include="..\3DGraphics\LightingSystem.h" />
+    <ClInclude Include="..\3DGraphics\Mesh.h" />
+    <ClInclude Include="..\3DGraphics\PhysicsWorld.h" />
+    <ClInclude Include="..\3DGraphics\Renderer.h" />
+    <ClInclude Include="..\3DGraphics\ResourceManager.h" />
+    <ClInclude Include="..\3DGraphics\RigidbodyComponent.h" />
+    <ClInclude Include="..\3DGraphics\Shader.h" />
+    <ClInclude Include="..\3DGraphics\Skybox.h" />
+    <ClInclude Include="..\3DGraphics\SphereColliderComponent.h" />
+    <ClInclude Include="..\3DGraphics\Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameManager.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerControllerComponent.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneFactory.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="3DGraphics.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.vcxproj">
-      <Project>{d9e684a7-d7f8-40be-a2b5-5103c14dbc63}</Project>
-    </ProjectReference>
+    <None Include="..\3DGraphics\shader.frag" />
+    <None Include="..\3DGraphics\shader.vert" />
+    <None Include="..\3DGraphics\shadow_depth.frag" />
+    <None Include="..\3DGraphics\shadow_depth.vert" />
+    <None Include="..\3DGraphics\skybox.frag" />
+    <None Include="..\3DGraphics\skybox.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

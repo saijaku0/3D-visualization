@@ -4,4 +4,5 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="3DGraphics/3DGraphics.vcxproj" Id="9237a81e-2018-4d88-8e79-03a7c9d8cb09" />
+  <Project Path="Engine/Engine.vcxproj" Id="d9e684a7-d7f8-40be-a2b5-5103c14dbc63" />
 </Solution>

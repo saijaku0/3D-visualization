@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков\Core">
+      <UniqueIdentifier>{cee67b72-56b0-4fe5-b154-889c7b492f65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Camera">
+      <UniqueIdentifier>{ce1c3def-fa4a-4a3d-994e-9da4bd1aef50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Graphics">
+      <UniqueIdentifier>{5450ea60-c572-426a-b30b-0d1f82ae90a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Physics">
+      <UniqueIdentifier>{b453971c-9052-46fd-98a4-9893b0307540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Utils">
+      <UniqueIdentifier>{66082a37-d85a-416e-831c-d0bca844f9b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Camera">
+      <UniqueIdentifier>{9067d69a-33e9-4329-9fc3-bd18cb7b92cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Core">
+      <UniqueIdentifier>{bffc321f-5662-43ec-8a0c-c4254b2e98ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Graphics">
+      <UniqueIdentifier>{4752f753-5951-4e73-a6a5-cdf4cdf6ceb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Physics">
+      <UniqueIdentifier>{6ab33ef7-ba27-4ecd-ba1d-9364fdf5ba2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Utils">
+      <UniqueIdentifier>{7ab0b884-5ab7-4cff-b6c1-738536203122}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\3DGraphics\Component.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\GameObject.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\ResourceManager.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\Transform.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\AttachedCamera.h">
+      <Filter>Файлы заголовков\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\Camera.h">
+      <Filter>Файлы заголовков\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\FreeCamera.h">
+      <Filter>Файлы заголовков\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\DebugRenderer.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\LightingSystem.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\Mesh.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\Renderer.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\Shader.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\Skybox.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\BoxColliderComponent.h">
+      <Filter>Файлы заголовков\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\ColliderComponent.h">
+      <Filter>Файлы заголовков\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\Collision.h">
+      <Filter>Файлы заголовков\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\PhysicsWorld.h">
+      <Filter>Файлы заголовков\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\RigidbodyComponent.h">
+      <Filter>Файлы заголовков\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\SphereColliderComponent.h">
+      <Filter>Файлы заголовков\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3DGraphics\GeometryGenerator.h">
+      <Filter>Файлы заголовков\Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\3DGraphics\MeshRendererComponent.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\AttachedCamera.cpp">
+      <Filter>Исходные файлы\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\Camera.cpp">
+      <Filter>Исходные файлы\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\FreeCamera.cpp">
+      <Filter>Исходные файлы\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\Component.cpp">
+      <Filter>Исходные файлы\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\GameObject.cpp">
+      <Filter>Исходные файлы\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\ResourceManager.cpp">
+      <Filter>Исходные файлы\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\Transform.cpp">
+      <Filter>Исходные файлы\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\DebugRenderer.cpp">
+      <Filter>Исходные файлы\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\LightingSystem.cpp">
+      <Filter>Исходные файлы\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\Mesh.cpp">
+      <Filter>Исходные файлы\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\Renderer.cpp">
+      <Filter>Исходные файлы\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\Shader.cpp">
+      <Filter>Исходные файлы\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\Skybox.cpp">
+      <Filter>Исходные файлы\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\BoxColliderComponent.cpp">
+      <Filter>Исходные файлы\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\ColliderComponent.cpp">
+      <Filter>Исходные файлы\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\Collision.cpp">
+      <Filter>Исходные файлы\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\PhysicsWorld.cpp">
+      <Filter>Исходные файлы\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\RigidbodyComponent.cpp">
+      <Filter>Исходные файлы\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\SphereColliderComponent.cpp">
+      <Filter>Исходные файлы\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3DGraphics\GeometryGenerator.cpp">
+      <Filter>Исходные файлы\Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\3DGraphics\skybox.vert" />
+    <None Include="..\3DGraphics\shader.frag" />
+    <None Include="..\3DGraphics\shader.vert" />
+    <None Include="..\3DGraphics\shadow_depth.frag" />
+    <None Include="..\3DGraphics\shadow_depth.vert" />
+    <None Include="..\3DGraphics\skybox.frag" />
+  </ItemGroup>
+</Project>
