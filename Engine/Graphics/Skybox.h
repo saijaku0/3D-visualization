@@ -7,8 +7,8 @@
 #include <string>
 #include <iostream>
 #include "Shader.h" 
-#include "Camera.h" 
-#include "ResourceManager.h"
+#include "../Camera/Camera.h"  
+#include "../Core/ResourceManager.h"
 #include "stb_image.h"
 
 class Skybox {

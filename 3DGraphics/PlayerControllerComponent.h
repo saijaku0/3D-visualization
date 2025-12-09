@@ -1,9 +1,9 @@
 #pragma once
-#include "Component.h"
 #include "InputManager.h"
-#include "RigidbodyComponent.h"
-#include "Camera.h" 
-#include "GameObject.h"
+#include "Core/Component.h"
+#include "Physics/RigidbodyComponent.h"
+#include "Camera/Camera.h" 
+#include "Core/GameObject.h"
 
 class PlayerControllerComponent : public Component {
     InputManager* m_input;

@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h> 
 #include <glm/glm.hpp>
 #include <vector>
-#include "GameObject.h"
+#include "Core/GameObject.h"
 
 class InputManager;
 class Camera;

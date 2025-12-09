@@ -2,11 +2,11 @@
 #include <memory> 
 #include <vector>
 
-#include "Camera.h"
+#include "../Camera/Camera.h"
 #include "LightingSystem.h"
 #include "MeshRendererComponent.h"
 #include "Shader.h"
-#include "GameObject.h"
+#include "../Core/GameObject.h"
 #include "Mesh.h"
 
 class Renderer {

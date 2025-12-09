@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "ResourceManager.h"
+#include "../Core/ResourceManager.h"
 
 #include <glm/glm.hpp>
 

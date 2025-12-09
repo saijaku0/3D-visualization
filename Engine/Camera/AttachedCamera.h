@@ -3,7 +3,7 @@
 #define ATTACHEDCAMERA_H
 
 #include "Camera.h"
-#include "GameObject.h"
+#include "../Core/GameObject.h"
 
 class AttachedCamera : public Camera {
     const GameObject* target;

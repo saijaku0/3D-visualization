@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObject.h"
+#include "../Core/GameObject.h"
+#include "../Camera/Camera.h"
 #include "Shader.h"
-#include "Camera.h"
 #include <vector>
 
 class DebugRenderer {

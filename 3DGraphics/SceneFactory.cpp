@@ -1,12 +1,12 @@
 #include "SceneFactory.h"
-#include "GameObject.h"
-#include "Transform.h"
-#include "ResourceManager.h"
+#include "Core/GameObject.h"
+#include "Core/Transform.h"
+#include "Core/ResourceManager.h"
 
-#include "MeshRendererComponent.h"
-#include "RigidbodyComponent.h"
-#include "BoxColliderComponent.h"
-#include "PhysicsWorld.h"
+#include "Graphics/MeshRendererComponent.h"
+#include "Physics/RigidbodyComponent.h"
+#include "Physics/BoxColliderComponent.h"
+#include "Physics/PhysicsWorld.h"
 
 void SceneFactory::LoadDefaultScene(std::vector<std::unique_ptr<GameObject>>& objects, PhysicsWorld* physicsWorld) {
 

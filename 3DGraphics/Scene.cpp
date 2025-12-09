@@ -1,13 +1,13 @@
 #include "Scene.h"
-#include "ResourceManager.h"
-#include "GeometryGenerator.h"
+#include "Core/ResourceManager.h"
+#include "Utils/GeometryGenerator.h"
 
-#include "MeshRendererComponent.h"
-#include "RigidbodyComponent.h"
-#include "BoxColliderComponent.h"
+#include "Graphics/MeshRendererComponent.h"
+#include "Physics/RigidbodyComponent.h"
+#include "Physics/BoxColliderComponent.h"
 #include "PlayerControllerComponent.h"
-#include "SphereColliderComponent.h"
-#include "DebugRenderer.h"
+#include "Physics/SphereColliderComponent.h"
+#include "Graphics/DebugRenderer.h"
 
 Scene::Scene(int width, int height, GLFWwindow* window)
     : m_gameManager(width, height),
@@ -23,9 +23,9 @@ Scene::~Scene() {
 }
 
 void Scene::Init() {
-    ResourceManager::LoadShader("shader.vert", "shader.frag", "default");
-    ResourceManager::LoadShader("skybox.vert", "skybox.frag", "skybox");
-    ResourceManager::LoadShader("shadow_depth.vert", "shadow_depth.frag", "shadow_depth");
+    ResourceManager::LoadShader("Engine/shader.vert", "Engine/shader.frag", "default");
+    ResourceManager::LoadShader("Engine/skybox.vert", "Engine/skybox.frag", "skybox");
+    ResourceManager::LoadShader("Engine/shadow_depth.vert", "Engine/shadow_depth.frag", "shadow_depth");
 
     ResourceManager::StoreMesh("cube", GeometryGenerator::CreateCube());
     ResourceManager::StoreMesh("sphere", GeometryGenerator::CreateSphere());
@@ -52,9 +52,9 @@ void Scene::Init() {
 
     m_skybox = std::make_unique<Skybox>();
     std::vector<std::string> faces = {
-        "assets/sky_right.png", "assets/sky_left.png",
-        "assets/sky_top.png",   "assets/sky_bottom.png",
-        "assets/sky_front.png", "assets/sky_back.png"
+        "Engine/assets/sky_right.png", "Engine/assets/sky_left.png",
+        "Engine/assets/sky_top.png",   "Engine/assets/sky_bottom.png",
+        "Engine/assets/sky_front.png", "Engine/assets/sky_back.png"
     };
     m_skybox->LoadCubemap(faces);
 }

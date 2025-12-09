@@ -6,7 +6,6 @@
 
 
 Skybox::Skybox() {
-    ResourceManager::LoadShader("skybox.vert", "skybox.frag", "skybox");
     skyboxShader = ResourceManager::GetShader("skybox");
 
     float skyboxVertices[] = {

@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_GENERATOR_H
 #define GEOMETRY_GENERATOR_H
 
-#include "Mesh.h"
+#include "../Graphics/Mesh.h"
 
 #include <memory> 
 #include <glm/glm.hpp>

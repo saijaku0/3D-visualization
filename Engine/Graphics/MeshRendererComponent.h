@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
-#include "Component.h"
-#include "GameObject.h"
+#include "../Core/Component.h"
+#include "../Core/GameObject.h"
 
 class Mesh;
 

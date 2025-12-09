@@ -1,6 +1,6 @@
 #pragma once
 #include "ColliderComponent.h"
-#include "GameObject.h"
+#include "../Core/GameObject.h"
 
 class BoxColliderComponent :
     public ColliderComponent {

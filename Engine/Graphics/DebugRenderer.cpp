@@ -1,7 +1,7 @@
 #include "DebugRenderer.h"
-#include "ResourceManager.h" 
-#include "BoxColliderComponent.h"
-#include "SphereColliderComponent.h" 
+#include "../Core/ResourceManager.h" 
+#include "../Physics/BoxColliderComponent.h"
+#include "../Physics/SphereColliderComponent.h" 
 
 std::shared_ptr<Shader> DebugRenderer::m_shader = nullptr;
 

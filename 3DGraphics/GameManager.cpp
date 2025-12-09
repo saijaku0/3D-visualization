@@ -1,10 +1,10 @@
 #include "GameManager.h"
 #include <iostream>
 
-#include "FreeCamera.h"
-#include "AttachedCamera.h"
-#include "GameObject.h"
-#include "Transform.h" 
+#include "Camera/FreeCamera.h"
+#include "Camera/AttachedCamera.h"
+#include "Core/GameObject.h"
+#include "Core/Transform.h" 
 
 GameManager::GameManager(int width, int height) :
     isGameMode(false),

@@ -4,8 +4,8 @@
 #include "BoxColliderComponent.h"
 #include "SphereColliderComponent.h"
 #include "Collision.h"
-#include "GameObject.h"
-#include "Transform.h"
+#include "../Core/GameObject.h"
+#include "../Core/Transform.h"
 
 #include <algorithm>
 

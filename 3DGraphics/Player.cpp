@@ -1,8 +1,8 @@
 #include "Player.h"
-#include "ResourceManager.h"
-#include "MeshRendererComponent.h"
-#include "RigidbodyComponent.h"
-#include "BoxColliderComponent.h"
+#include "Core/ResourceManager.h"
+#include "Graphics/MeshRendererComponent.h"
+#include "Physics/RigidbodyComponent.h"
+#include "Physics/BoxColliderComponent.h"
 #include "PlayerControllerComponent.h"
 #include <iostream>
 #include <cmath>

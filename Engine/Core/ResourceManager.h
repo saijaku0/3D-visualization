@@ -4,8 +4,8 @@
 #include <memory>
 #include <iostream>
 
-#include "Shader.h"
-#include "Mesh.h"
+#include "../Graphics/Shader.h"
+#include "../Graphics/Mesh.h"
 
 class ResourceManager {
 public:

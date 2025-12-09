@@ -7,13 +7,13 @@
 #include <vector>
 #include <memory> 
 
-#include "PhysicsWorld.h"
-#include "LightingSystem.h"
-#include "Renderer.h"
-#include "Skybox.h"
-#include "FreeCamera.h"
-#include "AttachedCamera.h"
-#include "GameObject.h"
+#include "Physics/PhysicsWorld.h"
+#include "Graphics/LightingSystem.h"
+#include "Graphics/Renderer.h"
+#include "Graphics/Skybox.h"
+#include "Camera/FreeCamera.h"
+#include "Camera/AttachedCamera.h"
+#include "Core/GameObject.h"
 #include "GameManager.h"
 #include "InputManager.h"
 
