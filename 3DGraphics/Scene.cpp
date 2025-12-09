@@ -25,11 +25,15 @@ Scene::~Scene() {
 void Scene::Init() {
     ResourceManager::LoadShader("shader.vert", "shader.frag", "default");
     ResourceManager::LoadShader("skybox.vert", "skybox.frag", "skybox");
+    ResourceManager::LoadShader("shadow_depth.vert", "shadow_depth.frag", "shadow_depth");
+
     ResourceManager::StoreMesh("cube", GeometryGenerator::CreateCube());
     ResourceManager::StoreMesh("sphere", GeometryGenerator::CreateSphere());
 
     auto debugShader = ResourceManager::GetShader("default");
     DebugRenderer::Init(debugShader);
+
+    m_renderer.InitShadow();
 
     m_lightingSystem.dirLight.direction = glm::vec3(-0.5f, -1.0f, -0.5f);
     m_lightingSystem.dirLight.ambient = glm::vec3(0.2f);
@@ -161,13 +165,14 @@ void Scene::Update(float deltaTime) {
 }
 
 void Scene::Draw(int scrWidth, int scrHeight) {
-    m_renderer.Clear();
+    //m_renderer.Clear();
+    auto mainShader = ResourceManager::GetShader("default");
 
-    auto shader = ResourceManager::GetShader("default");
+    //auto shader = ResourceManager::GetShader("default");
     glDisable(GL_CULL_FACE);
 
     m_renderer.DrawScene(
-        *shader,
+        *mainShader,
         m_activeCamera,
         m_lightingSystem,
         m_gameObjects,
