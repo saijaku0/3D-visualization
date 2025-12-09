@@ -10,10 +10,16 @@
 #include "Mesh.h"
 
 class Renderer {
+    unsigned int depthMapFBO;
+    unsigned int depthMap;
+    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
 public:
-    Renderer() {}
+    Renderer() : depthMapFBO(0.0f), depthMap(0.0f) {}
 
     void Clear();
+
+    void InitShadow();
 
     void DrawScene(
         Shader& shader,
@@ -30,4 +36,10 @@ public:
         std::shared_ptr<Mesh> debugMesh
     );
 private:
+    glm::mat4 GetLightSpaceMatrix(const glm::vec3& lightDir);
+
+    void RenderGameObjects(
+        Shader& shader,
+        const std::vector<std::unique_ptr<GameObject>>& gameObjects
+    );
 };
