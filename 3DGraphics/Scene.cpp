@@ -1,6 +1,8 @@
 #include "Scene.h"
+#include <imgui.h>
 #include "Core/ResourceManager.h"
 #include "Utils/GeometryGenerator.h"
+#include "GuiManager.h"
 
 #include "Graphics/MeshRendererComponent.h"
 #include "Physics/RigidbodyComponent.h"
@@ -22,6 +24,19 @@ Scene::~Scene() {
     ResourceManager::Clear();
 }
 
+unsigned int Scene::GetSceneTexture() { 
+    if (!m_framebuffer) return 0;
+    return m_framebuffer->GetTextureID(); 
+}
+
+void Scene::BindFramebuffer() {
+    if (m_framebuffer) m_framebuffer->Bind();
+}
+
+void Scene::UnbindFramebuffer() {
+    if (m_framebuffer) m_framebuffer->Unbind();
+}
+
 void Scene::Init() {
     ResourceManager::LoadShader("Engine/shader.vert", "Engine/shader.frag", "default");
     ResourceManager::LoadShader("Engine/skybox.vert", "Engine/skybox.frag", "skybox");
@@ -34,6 +49,7 @@ void Scene::Init() {
     DebugRenderer::Init(debugShader);
 
     m_renderer.InitShadow();
+    m_framebuffer = std::make_unique<Framebuffer>(800, 600);
 
     m_lightingSystem.dirLight.direction = glm::vec3(-0.5f, -1.0f, -0.5f);
     m_lightingSystem.dirLight.ambient = glm::vec3(0.2f);
@@ -66,7 +82,7 @@ void Scene::CreateLevel() {
     glm::vec3 playerScale = glm::vec3(1.0f, 2.0f, 1.0f);
     playerObj->GetTransformPtr()->SetScale(playerScale);
     auto playerRender = std::make_unique<MeshRendererComponent>(playerObj.get());
-    playerRender->mesh = ResourceManager::GetMesh("cube");
+    playerRender->SetMesh(ResourceManager::GetMesh("cube"));
     playerRender->color = glm::vec3(1.0f, 0.0f, 0.0f);
     playerObj->AddComponent(std::move(playerRender));
     auto playerRb = std::make_unique<RigidbodyComponent>(playerObj.get());
@@ -93,7 +109,7 @@ void Scene::CreateLevel() {
     ballObj->GetTransformPtr()->SetPosition(glm::vec3(3.0f, 5.0f, 0.0f));
     ballObj->GetTransformPtr()->SetScale(glm::vec3(1.0f));
     auto ballRender = std::make_unique<MeshRendererComponent>(ballObj.get());
-    ballRender->mesh = ResourceManager::GetMesh("sphere"); 
+    ballRender->SetMesh(ResourceManager::GetMesh("sphere"));
     ballRender->color = glm::vec3(0.0f, 0.0f, 1.0f); 
     ballObj->AddComponent(std::move(ballRender));
     auto ballCol = std::make_unique<SphereColliderComponent>(ballObj.get());
@@ -115,7 +131,7 @@ void Scene::CreateLevel() {
     glm::vec3 floorScale = glm::vec3(55.0f, 0.5f, 55.0f);
     floorObj->GetTransformPtr()->SetScale(floorScale);
     auto floorRender = std::make_unique<MeshRendererComponent>(floorObj.get());
-    floorRender->mesh = ResourceManager::GetMesh("cube");
+    floorRender->SetMesh(ResourceManager::GetMesh("cube"));
     floorRender->color = glm::vec3(0.7f, 0.7f, 0.7f);
     floorObj->AddComponent(std::move(floorRender));
     auto floorRb = std::make_unique<RigidbodyComponent>(floorObj.get());
@@ -150,26 +166,25 @@ void Scene::ProcessInput(GLFWwindow* window, float deltaTime) {
 }
 
 void Scene::Update(float deltaTime) {
-    m_gameTime += deltaTime;
+    if (m_gameManager.IsGameMode()) {
 
-    for (auto& obj : m_gameObjects) {
-        auto ctrl = obj->GetComponent<PlayerControllerComponent>();
+        m_gameTime += deltaTime;
 
-        if (ctrl && m_gameManager.IsGameMode()) 
-            ctrl->Update(deltaTime);
+        for (auto& obj : m_gameObjects) {
+            auto ctrl = obj->GetComponent<PlayerControllerComponent>();
+
+            if (ctrl && m_gameManager.IsGameMode())
+                ctrl->Update(deltaTime);
+        }
+
+        m_physicsWorld.Step(deltaTime);
     }
-
-    m_physicsWorld.Step(deltaTime);
 
     if (m_activeCamera) m_activeCamera->Update(deltaTime);
 }
 
 void Scene::Draw(int scrWidth, int scrHeight) {
-    //m_renderer.Clear();
     auto mainShader = ResourceManager::GetShader("default");
-
-    //auto shader = ResourceManager::GetShader("default");
-    glDisable(GL_CULL_FACE);
 
     m_renderer.DrawScene(
         *mainShader,
@@ -184,9 +199,9 @@ void Scene::Draw(int scrWidth, int scrHeight) {
     //DebugRenderer::RenderColliders(m_gameObjects, m_activeCamera);
 
     if (m_skybox) {
-        glm::mat4 view = m_activeCamera->GetViewMatrix();
-        glm::mat4 proj = m_activeCamera->GetProjectionMatrix((float)scrWidth / scrHeight);
-        m_skybox->Draw(view, proj);
+        glm::mat4 view = glm::mat4(glm::mat3(m_activeCamera->GetViewMatrix()));
+        glm::mat4 projection = m_activeCamera->GetProjectionMatrix();
+        m_skybox->Draw(view, projection);
     }
 }
 
@@ -213,4 +228,20 @@ void Scene::ProcessMouseMovement(GLFWwindow* window, double xpos, double ypos) {
 
     if (m_activeCamera)
         m_activeCamera->ProcessMouseMovement(xoffset, yoffset);
+}
+
+void Scene::OnResize(float width, float height) {
+    if ((width == m_viewportWidth && height == m_viewportHeight) || width <= 0 || height <= 0)
+        return;
+
+    m_viewportWidth = width;
+    m_viewportHeight = height;
+
+    if (m_activeCamera) {
+        m_activeCamera->SetAspectRatio(width, height);
+    }
+
+    if (m_framebuffer) {
+        m_framebuffer->Rescale((int)width, (int)height);
+    }
 }

@@ -41,6 +41,7 @@ public:
     Mesh& operator=(const Mesh&) = delete;
 
     void Draw(const Shader& shader) const;
+    unsigned int GetVAO() const;
 private: 
     void SetupMesh();
 };

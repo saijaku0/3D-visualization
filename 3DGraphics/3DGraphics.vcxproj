@@ -141,7 +141,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3DGraphics.cpp" />
+    <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GuiManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerControllerComponent.cpp" />
@@ -149,7 +151,9 @@
     <ClCompile Include="SceneFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EditorManager.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GuiManager.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControllerComponent.h" />

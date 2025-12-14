@@ -108,6 +108,9 @@
     <ClInclude Include="Utils\GeometryGenerator.h">
       <Filter>Файлы заголовков\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Framebuffer.h">
+      <Filter>Файлы заголовков\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera\AttachedCamera.cpp">
@@ -169,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="Utils\GeometryGenerator.cpp">
       <Filter>Исходные файлы\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Framebuffer.cpp">
+      <Filter>Исходные файлы\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,8 @@
 #include "Mesh.h"
 #include "Shader.h"
 
+unsigned int Mesh::GetVAO() const { return VAO; }
+
 Mesh::Mesh(std::vector<Vertex>&& vertices, std::vector<unsigned int>&& indices, std::vector<Texture>&& textures) {
     this->vertices = std::move(vertices);
     this->indices = std::move(indices);
@@ -24,6 +26,14 @@ Mesh::Mesh(Mesh&& other) noexcept
 void Mesh::Draw(const Shader& shader) const {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
+
+    static int debugCounter = 0;
+    if (debugCounter < 5) {
+        std::cout << "[Mesh Debug] Drawing VAO: " << VAO
+            << " | Indices: " << indices.size()
+            << " | Vertices: " << vertices.size() << std::endl;
+        debugCounter++;
+    }
 
     for (unsigned int i = 0; i < textures.size(); i++)
     {

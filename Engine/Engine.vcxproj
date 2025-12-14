@@ -27,6 +27,7 @@
     <ClInclude Include="Core\ResourceManager.h" />
     <ClInclude Include="Core\Transform.h" />
     <ClInclude Include="Graphics\DebugRenderer.h" />
+    <ClInclude Include="Graphics\Framebuffer.h" />
     <ClInclude Include="Graphics\LightingSystem.h" />
     <ClInclude Include="Graphics\Mesh.h" />
     <ClInclude Include="Graphics\MeshRendererComponent.h" />
@@ -50,6 +51,7 @@
     <ClCompile Include="Core\ResourceManager.cpp" />
     <ClCompile Include="Core\Transform.cpp" />
     <ClCompile Include="Graphics\DebugRenderer.cpp" />
+    <ClCompile Include="Graphics\Framebuffer.cpp" />
     <ClCompile Include="Graphics\LightingSystem.cpp" />
     <ClCompile Include="Graphics\Mesh.cpp" />
     <ClCompile Include="Graphics\Renderer.cpp" />

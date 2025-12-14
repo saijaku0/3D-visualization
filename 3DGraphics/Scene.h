@@ -11,6 +11,7 @@
 #include "Graphics/LightingSystem.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Skybox.h"
+#include "Graphics/Framebuffer.h"
 #include "Camera/FreeCamera.h"
 #include "Camera/AttachedCamera.h"
 #include "Core/GameObject.h"
@@ -37,6 +38,7 @@ class Scene {
 
     float m_gameTime = 0.0f;
     std::unique_ptr<InputManager> m_inputManager;
+    std::unique_ptr<Framebuffer> m_framebuffer;
 
 public:
     Scene(int width, int height, GLFWwindow* window);
@@ -44,14 +46,27 @@ public:
 
     void Init();
 
+    Camera* GetActiveCamera() const { return m_activeCamera; }
+
     void Update(float deltaTime);
     void Draw(int scrWidth, int scrHeight); 
 
     void ProcessInput(GLFWwindow* window, float deltaTime);
     void ProcessMouseMovement(GLFWwindow* window, double xpos, double ypos);
 
+    void OnResize(float width, float height);
+    float GetWidth() const { return m_viewportWidth; }
+    float GetHeight() const { return m_viewportHeight; }
+
+    void BindFramebuffer();
+    void UnbindFramebuffer();
+    unsigned int GetSceneTexture();
+
 private:
     void CreateLevel();
+
+    float m_viewportWidth = 800.0f;
+    float m_viewportHeight = 600.0f;
 };
 
 #endif // !SCENE_H

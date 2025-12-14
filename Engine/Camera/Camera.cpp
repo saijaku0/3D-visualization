@@ -17,8 +17,8 @@ glm::mat4 Camera::GetViewMatrix() const {
     return glm::lookAt(m_Position, m_Position + m_Front, m_Up);
 }
 
-glm::mat4 Camera::GetProjectionMatrix(float aspectRatio) const {
-    return glm::perspective(glm::radians(m_Zoom), aspectRatio, 0.1f, 100.0f);
+glm::mat4 Camera::GetProjectionMatrix() const {
+    return glm::perspective(glm::radians(m_Zoom), AspectRatio, 0.1f, 100.0f);
 }
 
 void Camera::ProcessKeyboard(CameraMovement direction, float deltaTime) {

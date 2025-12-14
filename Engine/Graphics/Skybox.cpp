@@ -6,6 +6,7 @@
 
 
 Skybox::Skybox() {
+    glDepthFunc(GL_LEQUAL);
     skyboxShader = ResourceManager::GetShader("skybox");
 
     float skyboxVertices[] = {
@@ -60,6 +61,7 @@ Skybox::Skybox() {
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glDepthFunc(GL_LESS);
 }
 
 void Skybox::LoadCubemap(std::vector<std::string>& faces) {

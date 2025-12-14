@@ -41,8 +41,13 @@ void Renderer::DrawScene(Shader& shader,
     float gameTime,
     int scrWidth, int scrHeight)
 {
+    glDisable(GL_CULL_FACE);
+    GLint currentFBO;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &currentFBO);
+
     glm::mat4 lightSpaceMatrix = GetLightSpaceMatrix(lightingSystem.dirLight.direction);
     glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
     glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -51,7 +56,7 @@ void Renderer::DrawScene(Shader& shader,
     depthShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
     RenderGameObjects(*depthShader, gameObjects);
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, currentFBO);
     glViewport(0, 0, scrWidth, scrHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -77,18 +82,21 @@ void Renderer::DrawScene(Shader& shader,
     for (const auto& obj : gameObjects) {
         auto meshRenderer = obj->GetComponent<MeshRendererComponent>();
 
-        if(!meshRenderer || !meshRenderer->mesh) continue;
+        if(!meshRenderer || !meshRenderer->GetMesh()) continue;
 
         Transform* transform = obj->GetTransformPtr();
 
         if (transform) {
             glm::mat4 model = transform->GetModelMatrix();
             shader.setMat4("model", model);
+            
         }
+
+        glBindVertexArray(meshRenderer->GetMesh()->GetVAO());
 
         shader.setVec3("objectColor", meshRenderer->color);
 
-        meshRenderer->mesh->Draw(shader);
+        meshRenderer->GetMesh()->Draw(shader);
     }
 
     DrawGizmos(shader, lightingSystem, cubeGizmoMesh);
@@ -120,7 +128,7 @@ glm::mat4 Renderer::GetLightSpaceMatrix(const glm::vec3& lightDir) {
 void Renderer::RenderGameObjects(Shader& shader, const std::vector<std::unique_ptr<GameObject>>& gameObjects) {
     for (const auto& obj : gameObjects) {
         auto mr = obj->GetComponent<MeshRendererComponent>();
-        if (!mr || !mr->mesh) continue;
+        if (!mr || !mr->GetMesh()) continue;
 
         Transform* tr = obj->GetTransformPtr();
         glm::mat4 model = glm::mat4(1.0f);
@@ -130,6 +138,6 @@ void Renderer::RenderGameObjects(Shader& shader, const std::vector<std::unique_p
 
         shader.setMat4("model", model);
 
-        mr->mesh->Draw(shader);
+        mr->GetMesh()->Draw(shader);
     }
 }

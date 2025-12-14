@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Scene.h" 
+#include "EditorManager.h"
 
 Scene* scene = nullptr;
 int SCR_WIDTH = 800;
@@ -40,8 +41,8 @@ int main()
         return -1;
     }
 
-    glEnable(GL_DEPTH_TEST);
-
+    EditorManager editor;
+    editor.Init(window);
     scene = new Scene(SCR_WIDTH, SCR_HEIGHT, window);
 
     float deltaTime = 0.0f;
@@ -57,12 +58,30 @@ int main()
 
         scene->Update(deltaTime);
 
-        scene->Draw(SCR_WIDTH, SCR_HEIGHT);
+        scene->BindFramebuffer();
+        glViewport(0, 0, (int)scene->GetWidth(), (int)scene->GetHeight());
+        glEnable(GL_DEPTH_TEST);
+
+        if (scene->GetActiveCamera()) {
+            scene->GetActiveCamera()->SetAspectRatio((float)SCR_WIDTH, (float)SCR_HEIGHT);
+        }
+
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        scene->Draw(scene->GetWidth(), scene->GetHeight());
+
+        scene->UnbindFramebuffer();
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        editor.Draw(scene);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
+    editor.Shutdown();
     delete scene; 
     glfwTerminate();
     return 0;

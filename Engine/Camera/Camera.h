@@ -31,12 +31,17 @@ public:
         updateCameraVectors();
     }
 
+    void SetAspectRatio(float width, float height) {
+        if (height == 0) height = 1; 
+        AspectRatio = width / height;
+    }
+
     float GetYaw() const { return m_Yaw; }
     float GetPitch() const { return m_Pitch; }
     float GetZoom() const { return m_Zoom; }
 
     glm::mat4 GetViewMatrix() const;
-    glm::mat4 GetProjectionMatrix(float aspectRatio) const;
+    glm::mat4 GetProjectionMatrix() const;
 
     virtual void ProcessKeyboard(CameraMovement direction, float deltaTime);
     virtual void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
@@ -58,6 +63,7 @@ protected:
     float m_Zoom;
     float m_zNear = 0.1f;
     float m_zFar = 100.0f;
+    float AspectRatio = 1.777f;
 
     void updateCameraVectors();
 };

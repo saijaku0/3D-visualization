@@ -12,7 +12,7 @@ Player::Player(InputManager* input, Camera* camera) : GameObject() {
     GetTransformPtr()->SetScale(glm::vec3(1.0f));
 
     auto meshRenderer = std::make_unique<MeshRendererComponent>(this);
-    meshRenderer->mesh = ResourceManager::GetMesh("cube");
+    meshRenderer->GetMesh() = ResourceManager::GetMesh("cube");
     AddComponent(std::move(meshRenderer));
 
     auto rb = std::make_unique<RigidbodyComponent>(this);

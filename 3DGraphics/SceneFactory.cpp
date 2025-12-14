@@ -87,7 +87,7 @@ std::unique_ptr<GameObject> SceneFactory::CreateBox(
     t->SetScale(scale);
 
     auto render = std::make_unique<MeshRendererComponent>(obj.get());
-    render->mesh = ResourceManager::GetMesh(meshName);
+    render->GetMesh() = ResourceManager::GetMesh(meshName);
     obj->AddComponent(std::move(render));
 
     auto rb = std::make_unique<RigidbodyComponent>(obj.get());
