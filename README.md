@@ -6,7 +6,7 @@ Currently, the project showcases a simple rotating triangle. This is just the ve
 
 To streamline the development process and make it easy to build and run, I've implemented a package.json file. This allows for convenient project management using npm commands.
 
-**FINAL**
+<img width="1919" height="1036" alt="image" src="https://github.com/user-attachments/assets/7180a4fe-0319-40ce-ac26-5bbc8b8a23a4" />
 
 https://github.com/user-attachments/assets/6ca1f27a-7bf4-41ac-bf70-0c0df55a35b2
 
